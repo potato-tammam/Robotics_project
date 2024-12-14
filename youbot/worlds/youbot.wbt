@@ -1,0 +1,510 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/kuka/youbot/protos/KukaBox.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/kuka/youbot/protos/Youbot.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/apartment_structure/protos/Wall.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/BrushedAluminium.proto"
+IMPORTABLE EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/solids/protos/SolidBox.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+
+WorldInfo {
+  info [
+    "Simulation of the KUKA youBot robot."
+    "This model includes an accurate and fast simulation of the Meccanum wheels."
+    "The robot can be equiped with various sensors (including the Microsoft Kinect) and configured with zero, one or two arms."
+  ]
+  title "KUKA youBot"
+  basicTimeStep 16
+  contactProperties [
+    ContactProperties {
+      material1 "InteriorWheelMat"
+      coulombFriction [
+        0, 2, 0
+      ]
+      frictionRotation -0.785398 0
+      bounce 0
+      forceDependentSlip [
+        10, 0
+      ]
+    }
+    ContactProperties {
+      material1 "ExteriorWheelMat"
+      coulombFriction [
+        0, 2, 0
+      ]
+      frictionRotation 0.785398 0
+      bounce 0
+      forceDependentSlip [
+        10, 0
+      ]
+    }
+  ]
+}
+Viewpoint {
+  orientation 0.5293003011388109 -0.5577770336366958 -0.6393168009381672 4.327321930204484
+  position -1.2636725918772962 -3.9819831420646885 5.6153001091583095
+  follow "youBot"
+}
+TexturedBackground {
+}
+Youbot {
+  translation -0.37425299986873606 -2.199309969327966 0.1013340562631318
+  rotation 2.0470843740389847e-10 7.907455055723516e-08 0.9999999999999969 3.1390468727997605
+  controller "Controller_1"
+  controllerArgs [
+    "demo"
+  ]
+  bodySlot [
+    DistanceSensor {
+      translation 0.21 0.0115 -0.08
+      rotation 0 1 0 1.5708
+      name "lfs0"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.21 0.085 -0.08
+      rotation 0 1 0 1.5708
+      name "lfs1"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.21 0.065 -0.08
+      rotation 0 1 0 1.5708
+      name "lfs2"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.21 0.045 -0.08
+      rotation 0 1 0 1.5708
+      name "lfs3"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.21 -0.045 -0.08
+      rotation 0 1 0 1.5708
+      name "lfs4"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.21 -0.065 -0.08
+      rotation 0 1 0 1.5708
+      name "lfs5"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.21 -0.085 -0.08
+      rotation 0 1 0 1.5708
+      name "lfs6"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.21 -0.0115 -0.08
+      rotation 0 1 0 1.5708
+      name "lfs7"
+      type "infra-red"
+    }
+    Camera {
+      translation 0 0.01 -0.08
+      rotation 0 -1 0 -1.5708
+      name "cam"
+      recognitionColors [
+        1 1 0
+        0 1 0
+        0 0 1
+        1 0 0
+        0 0 0
+      ]
+      fieldOfView 0.785397
+    }
+  ]
+  numberOfArms 2
+}
+Youbot {
+  translation 1.5923505207954654 -2.204135055428801 0.10133405345000965
+  rotation 1.3889090517091293e-07 7.84909242841107e-08 0.9999999999999872 3.138829453528502
+  name "youBot(1)"
+  controller "<none>"
+  controllerArgs [
+    "demo"
+  ]
+  bodySlot [
+    LightSensor {
+      translation 0.21 0.02 -0.08
+      rotation 0 -1 0 7.75914e-06
+      recognitionColors [
+        0.666667 0 0
+      ]
+    }
+  ]
+  numberOfArms 2
+}
+RectangleArena {
+  contactMaterial ""
+  floorSize 5 5
+  floorTileSize 5 5
+  floorAppearance Appearance {
+    texture ImageTexture {
+      url [
+        "../ground.png"
+      ]
+    }
+  }
+  wallHeight 0.5
+}
+Wall {
+  translation 0 2.5 0.24
+  rotation 1 0 0 1.57079632679
+  size 0.15 0.45 5
+  appearance BrushedAluminium {
+  }
+}
+SolidBox {
+  translation 2.20545 1.89 0.2
+  name "box_red_1"
+  size 0.6 0.6 0.4
+  appearance PBRAppearance {
+    baseColor 0.666667 0 0
+    roughness 0.5
+    roughnessMap ImageTexture {
+      url [
+        "../box-texture1.jpg"
+      ]
+    }
+    metalness 0
+  }
+}
+SolidBox {
+  translation -2.20545 1.89 0.2
+  name "box_red_2"
+  size 0.6 0.6 0.4
+  appearance PBRAppearance {
+    baseColor 0.666667 0 0
+    roughness 0.5
+    roughnessMap ImageTexture {
+      url [
+        "../box-texture1.jpg"
+      ]
+    }
+    metalness 0
+  }
+}
+KukaBox {
+  translation -1.94 1.935 0.41249172281250013
+  rotation -0.4423174589385751 -0.5128318364504881 0.7357708699323057 1.9705283424504962e-15
+  name "Kuka_box_red_1"
+  color 0.666667 0 0
+}
+KukaBox {
+  translation -1.94 1.9 0.41249172281250013
+  rotation -0.4423174589385751 -0.5128318364504881 0.7357708699323057 1.9705283424504962e-15
+  name "Kuka_box_red_2"
+  color 0.666667 0 0
+}
+KukaBox {
+  translation -1.94 1.865 0.41249172281250013
+  rotation -0.4423174589385751 -0.5128318364504881 0.7357708699323057 1.9705283424504962e-15
+  name "Kuka_box_red_3"
+  color 0.666667 0 0
+}
+KukaBox {
+  translation -1.94 1.83 0.41249172281250013
+  rotation -0.4423174589385751 -0.5128318364504881 0.7357708699323057 1.9705283424504962e-15
+  name "Kuka_box_red_4"
+  color 0.666667 0 0
+}
+SolidBox {
+  translation 2.20545 0.64 0.2
+  name "box_green_1"
+  size 0.6 0.6 0.4
+  appearance PBRAppearance {
+    baseColor 0 0.666667 0
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation -2.20545 0.64 0.2
+  name "box_green_2"
+  size 0.6 0.6 0.4
+  appearance PBRAppearance {
+    baseColor 0 0.666667 0
+    roughness 0.5
+    metalness 0
+  }
+}
+KukaBox {
+  translation -1.94 0.685 0.41249172281250013
+  rotation -0.5957049535601462 -0.6999533204332119 0.39395552733579636 1.2722946937874087e-15
+  name "Kuka_box_green_1"
+  color 0 0.666667 0
+}
+KukaBox {
+  translation -1.94 0.65 0.41249172281250013
+  rotation -0.7308985064717096 -0.6796073832105185 -0.06261930950733821 9.851116571291437e-16
+  name "Kuka_box_green_2"
+  color 0 0.666667 0
+}
+KukaBox {
+  translation -1.94 0.615 0.41249172281250013
+  rotation -0.7630311842655689 -0.6318092608568516 0.1363835390866579 1.2995561423929471e-15
+  name "Kuka_box_green_3"
+  color 0 0.666667 0
+}
+KukaBox {
+  translation -1.94 0.58 0.41249172281250013
+  rotation 0.6933097330093527 -0.6771862508462763 -0.2464556669652056 1.1751683721527756e-15
+  name "Kuka_box_green_4"
+  color 0 0.666667 0
+}
+SolidBox {
+  translation 2.20545 -0.61 0.2
+  name "box_blue_1"
+  size 0.6 0.6 0.4
+  appearance PBRAppearance {
+    baseColor 0 0.333333 1
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation -2.20545 -0.61 0.2
+  name "box_blue_2"
+  size 0.6 0.6 0.4
+  appearance PBRAppearance {
+    baseColor 0 0.333333 1
+    roughness 0.5
+    metalness 0
+  }
+}
+KukaBox {
+  translation -1.94 -0.565 0.41249172281250013
+  rotation -0.5957049535601462 -0.6999533204332119 0.39395552733579636 1.2722946937874087e-15
+  name "Kuka_box_blue_1"
+  color 0 0 0.666667
+}
+KukaBox {
+  translation -1.94 -0.6 0.41249172281250013
+  rotation -0.7308985064717096 -0.6796073832105185 -0.06261930950733821 9.851116571291437e-16
+  name "Kuka_box_blue_2"
+  color 0 0 0.666667
+}
+KukaBox {
+  translation -1.94 -0.635 0.41249172281250013
+  rotation -0.7630311842655689 -0.6318092608568516 0.1363835390866579 1.2995561423929471e-15
+  name "Kuka_box_blue_3"
+  color 0 0 0.666667
+}
+KukaBox {
+  translation -1.94 -0.67 0.41249172281250013
+  rotation 0.6933097330093527 -0.6771862508462763 -0.2464556669652056 1.1751683721527756e-15
+  name "Kuka_box_blue_4"
+  color 0 0 0.666667
+}
+SolidBox {
+  translation 2.20545 -1.86 0.2
+  name "box_yellow_1"
+  size 0.6 0.6 0.4
+  appearance PBRAppearance {
+    baseColor 1 1 0
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation -2.20545 -1.86 0.2
+  name "box_yellow_2"
+  size 0.6 0.6 0.4
+  appearance PBRAppearance {
+    baseColor 1 1 0
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation -0.69545 -2.21 0
+  name "left_cell_1"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 1 1 0
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation -1.28545 -1.88 0
+  name "left_cell_1(1)"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 1 1 0
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation 1.06 -2.2 0
+  name "right_cell_1"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 1 1 0
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation 0.8 -1.88 0
+  name "right_cell_1(1)"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 1 1 0
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation -0.79545 -2.21 0
+  name "left_cell_2"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 1 0 0
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation -1.29545 1.87 0
+  name "left_cell_2(1)"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 1 0 0
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation 0.96 -2.2 0
+  name "right_cell_2"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 1 0 0
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation 0.8 1.87 0
+  name "right_cell_2(1)"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 1 0 0
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation -0.89545 -2.21 0
+  name "left_cell_3"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 0 0 1
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation -1.28545 -0.63 0
+  name "left_cell_3(1)"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 0 0 1
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation 1.16 -2.2 0
+  name "right_cell_3"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 0 0 1
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation 0.79 -0.63 0
+  name "right_cell_3(1)"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 0 0 1
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation -0.99545 -2.21 0
+  name "left_cell_4"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 0 1 0
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation -1.28545 0.62 0
+  name "left_cell_4(1)"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 0 1 0
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation 1.26 -2.2 0
+  name "right_cell_4"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 0 1 0
+    roughness 0.5
+    metalness 0
+  }
+}
+SolidBox {
+  translation 0.79 0.62 0
+  name "right_cell_4(1)"
+  size 0.1 0.1 0.001
+  appearance PBRAppearance {
+    baseColor 0 1 0
+    roughness 0.5
+    metalness 0
+  }
+}
+KukaBox {
+  translation -1.94 -1.815 0.41249172281250013
+  rotation -0.4423174589385751 -0.5128318364504881 0.7357708699323057 1.9705283424504962e-15
+  name "Kuka_box_yellow_1"
+  color 0.666667 0.666667 0
+}
+KukaBox {
+  translation -1.94 -1.85 0.41249172281250013
+  rotation -0.4423174589385751 -0.5128318364504881 0.7357708699323057 1.9705283424504962e-15
+  name "Kuka_box_yellow_2"
+  color 0.666667 0.666667 0
+}
+KukaBox {
+  translation -1.94 -1.885 0.41249172281250013
+  rotation -0.4423174589385751 -0.5128318364504881 0.7357708699323057 1.9705283424504962e-15
+  name "Kuka_box_yellow_3"
+  color 0.666667 0.666667 0
+}
+KukaBox {
+  translation -1.94 -1.92 0.41249172281250013
+  rotation -0.4423174589385751 -0.5128318364504881 0.7357708699323057 1.9705283424504962e-15
+  name "Kuka_box_yellow_4"
+  color 0.666667 0.666667 0
+}
+TexturedBackgroundLight {
+}
