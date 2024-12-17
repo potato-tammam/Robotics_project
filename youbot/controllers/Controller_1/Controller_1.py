@@ -36,9 +36,14 @@ class PIDController:
 class RobotController(Robot):
     def __init__(self, pid):
         super().__init__()
-        self.pid = pid
         self.timestep = int(self.getBasicTimeStep())
-
+        
+        self.integral = 0
+        self.last_error = 0
+        self.Kp = 0.01
+        self.Ki = 0
+        self.Kd = 0.01
+        
         # Motors (YouBot has four wheel motors)
         self.wheels = [
             self.getDevice("wheel1"),  # Front-left
@@ -64,6 +69,13 @@ class RobotController(Robot):
         self.colors_detected = deque(maxlen=4)
         self.collecting_colors = True
 
+    def get_weighted_sensor_value(self):
+        value = 0
+        for index, sensor in enumerate(self.line_sensors):
+            if sensor.getValue() > 200:
+                value += self.weights[index]
+        return value
+    
     def detect_color(self, cameraArray):
         """
         Detect the color based on the averaged RGB values in the center of the camera's image.
@@ -137,20 +149,9 @@ class RobotController(Robot):
         return max(-YOUBOT_MAX_VELOCITY, min(YOUBOT_MAX_VELOCITY, velocity))
 
     def follow_line(self, velocity=YOUBOT_MAX_VELOCITY):
-        """
-        Follow the line using PID control.
-        """
-        error = self.get_line_error()
-        correction = self.pid.compute_correction(error)
+        pass
+    
 
-        left_velocity = self.clamp_velocity(velocity - correction)
-        right_velocity = self.clamp_velocity(velocity + correction)
-
-        # Set velocities for skid steering
-        self.wheels[0].setVelocity(left_velocity)  # Front-left
-        self.wheels[1].setVelocity(right_velocity)  # Front-right
-        self.wheels[2].setVelocity(left_velocity)  # Rear-left
-        self.wheels[3].setVelocity(right_velocity)  # Rear-right
 
     def move_forward(self, velocity=2):
         """

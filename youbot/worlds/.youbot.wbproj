@@ -9,4 +9,3 @@ textFiles: -1
 globalOptionalRendering: LightSensorRays::CameraFrustums::DistanceSensorRays
 consoles: Console:All:All
 renderingDevicePerspectives: youBot:cam;1;0.734375;0;0
-renderingDevicePerspectives: youBot:camera;1;1;0;0
