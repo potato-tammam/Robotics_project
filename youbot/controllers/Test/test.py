@@ -275,7 +275,7 @@ class RobotController(Robot):
         for i in range(2):
             self.wheels[i].setVelocity(rotation_velocity)
             self.wheels[i + 2].setVelocity(-rotation_velocity)
-        duration = 1750
+        duration = 1740
         for _ in range(duration):
             for wheel in self.wheels:
                 print(f'{wheel.getName()} speed is {wheel.getVelocity()}')
