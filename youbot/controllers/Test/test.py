@@ -91,7 +91,7 @@ class RobotController(Robot):
         
         
         # Initialize the front infrared sensors
-        self.wall_sensors = [self.getDevice(f"front-sensor-{i}") for i in range(3)]
+        self.wall_sensors = [self.getDevice(f"front-sensor-{i}") for i in range(5)]
         for wall_sensor in self.wall_sensors:
             wall_sensor.enable(self.timestep)
         
@@ -236,7 +236,7 @@ class RobotController(Robot):
         self.finger2.setPosition(self.fingerMaxPosition)
         self.step(50 * TIME_STEP)
 
-    def move_forward_1(self, velocity=2):
+    def move_forward_1(self, velocity=5):
         """
         Move forward at a constant speed.
         """
@@ -275,7 +275,7 @@ class RobotController(Robot):
         for i in range(2):
             self.wheels[i].setVelocity(rotation_velocity)
             self.wheels[i + 2].setVelocity(-rotation_velocity)
-        duration = 2000
+        duration = 1750
         for _ in range(duration):
             for wheel in self.wheels:
                 print(f'{wheel.getName()} speed is {wheel.getVelocity()}')
