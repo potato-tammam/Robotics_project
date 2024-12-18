@@ -49,7 +49,48 @@ class RobotController(Robot):
         for wheel in self.wheels:
             wheel.setPosition(float("inf"))  # Set to velocity control mode
             wheel.setVelocity(0)
+        
+        """
+        Initialize the arms and claws with explicit joint values for positions.
+        """
+        self.armMotors = []
+        self.armMotors.append(self.getDevice("arm1"))
+        self.armMotors.append(self.getDevice("arm2"))
+        self.armMotors.append(self.getDevice("arm3"))
+        self.armMotors.append(self.getDevice("arm4"))
+        self.armMotors.append(self.getDevice("arm5"))
+        # Set the maximum motor velocity.
+        self.armMotors[0].setVelocity(1.5) # maxVelocity = 1.5
+        self.armMotors[1].setVelocity(1.5)
+        self.armMotors[2].setVelocity(1.5)
+        self.armMotors[3].setVelocity(0.5)
+        self.armMotors[4].setVelocity(1.5)
 
+        #! Initialize arm position sensors.
+        # These sensors can be used to get the current 
+        # joint position and monitor the joint movements.
+        self.armPositionSensors = []
+        self.armPositionSensors.append(self.getDevice("arm1sensor"))
+        self.armPositionSensors.append(self.getDevice("arm2sensor"))
+        self.armPositionSensors.append(self.getDevice("arm3sensor"))
+        self.armPositionSensors.append(self.getDevice("arm4sensor"))
+        self.armPositionSensors.append(self.getDevice("arm5sensor"))
+        for sensor in self.armPositionSensors:
+            sensor.enable(TIME_STEP)
+
+        #! Initialize gripper motors.
+        self.finger1 = self.getDevice("finger::left")
+        self.finger2 = self.getDevice("finger::right")
+        # Set the maximum motor velocity.
+        self.finger1.setVelocity(1.5)
+        self.finger2.setVelocity(1.5) # 0.03
+        # Read the miminum and maximum position of the gripper motors.
+        self.fingerMinPosition = self.finger1.getMinPosition()
+        self.fingerMaxPosition = self.finger1.getMaxPosition()
+        
+        
+        
+        
         # Line sensors
         self.line_sensors = [self.getDevice(f"lfs{i}") for i in range(8)]
         self.line_weights = [-1000, -1000, -1000, -1000, 1000, 1000, 1000, 1000]  # Adjusted weights
@@ -137,7 +178,7 @@ class RobotController(Robot):
 
         left_velocity = self.clamp_velocity(YOUBOT_MAX_VELOCITY - correction)
         right_velocity = self.clamp_velocity(YOUBOT_MAX_VELOCITY + correction)
-
+        
         # Set velocities for skid steering
         self.wheels[0].setVelocity(left_velocity)  # Front-left
         self.wheels[1].setVelocity(right_velocity)  # Front-right
@@ -163,106 +204,72 @@ class RobotController(Robot):
 
         print("No wall detected by front sensors")
         return False
-
-
-def move_arm(self, arm_name, positions):
-    """
-    Move the specified arm joints to the given positions.
-    :param arm_name: Name of the arm ('left' or 'right').
-    :param positions: List of target positions for each joint.
-    """
-    if arm_name == "left":
-        arm_joints = [
-            self.getDevice("left_arm_joint1"),
-            self.getDevice("left_arm_joint2"),
-            self.getDevice("left_arm_joint3"),
-            self.getDevice("left_arm_joint4"),
-            self.getDevice("left_arm_joint5")
-        ]
-    elif arm_name == "right":
-        arm_joints = [
-            self.getDevice("right_arm_joint1"),
-            self.getDevice("right_arm_joint2"),
-            self.getDevice("right_arm_joint3"),
-            self.getDevice("right_arm_joint4"),
-            self.getDevice("right_arm_joint5")
-        ]
-    else:
-        raise ValueError(f"Invalid arm name: {arm_name}")
-
-    # Set the arm joints to the target positions
-    for joint, position in zip(arm_joints, positions):
-        joint.setPosition(position)
+   
     
-    print(f"{arm_name.capitalize()} arm moved to positions: {positions}")
-    self.step(self.timestep)  # Allow time for the arm to move
+    def pick_up(self):
+        self.armMotors[0].setPosition(1.7)
+        self.armMotors[1].setPosition(-1)
+        self.armMotors[2].setPosition(-1)
+        self.armMotors[3].setPosition(0)
+        self.finger1.setPosition(self.fingerMaxPosition)
+        self.finger2.setPosition(self.fingerMaxPosition)
 
-def control_claw(self, claw_name, action):
-    """
-    Control the specified claw to grab or release a cube.
-    :param claw_name: Name of the claw ('left' or 'right').
-    :param action: Action to perform ('grab' or 'release').
-    """
-    if claw_name == "left":
-        claw = self.getDevice("left_claw")
-    elif claw_name == "right":
-        claw = self.getDevice("right_claw")
-    else:
-        raise ValueError(f"Invalid claw name: {claw_name}")
+    def close_grippers(self):
+        self.finger1.setPosition(0.013)     # Close gripper.
+        self.finger2.setPosition(0.013)
 
-    if action == "grab":
-        claw.setPosition(0)  # Close the claw to grab
-        print(f"{claw_name.capitalize()} claw has grabbed the cube.")
-    elif action == "release":
-        claw.setPosition(1)  # Open the claw to release
-        print(f"{claw_name.capitalize()} claw has released the cube.")
-    else:
-        raise ValueError(f"Invalid action: {action}")
+    def hand_up(self):
+        self.armMotors[0].setPosition(0)
+        self.armMotors[1].setPosition(0)
+        self.armMotors[2].setPosition(0)
+        self.armMotors[3].setPosition(0)
+        self.armMotors[4].setPosition(0)
 
-    self.step(self.timestep)  # Allow time for the claw to perform the action
+    def fold_arms(self):
+        self.armMotors[0].setPosition(-2.9)
+        self.armMotors[1].setPosition(1.5)
+        self.armMotors[2].setPosition(-2.6)
+        self.armMotors[3].setPosition(1.7)
+        self.armMotors[4].setPosition(0)
 
-def grab_and_place(self, arm_name, claw_name, grab_positions, release_positions):
-    """
-    Perform the sequence of grabbing a cube, moving to a destination, and placing the cube.
-    :param arm_name: Name of the arm ('left' or 'right').
-    :param claw_name: Name of the claw ('left' or 'right').
-    :param grab_positions: List of joint positions to extend the arm for grabbing.
-    :param release_positions: List of joint positions to place the cube.
-    """
-    # Extend the arm to grab position
-    print(f"Moving {arm_name} arm to grab position...")
-    self.move_arm(arm_name, grab_positions)
+    def drop(self):
+        # Move arm down
+        self.armMotors[3].setPosition(0)
+        self.armMotors[2].setPosition(-0.3)
+        self.step(100 * TIME_STEP)
 
-    # Grab the cube with the specified claw
-    print(f"Grabbing cube with {claw_name} claw...")
-    self.control_claw(claw_name, "grab")
+        self.armMotors[1].setPosition(-1.0)
+        self.step(100 * TIME_STEP)
 
-    # Retract the arm to a transport position (optional)
-    print(f"Retracting {arm_name} arm to transport position...")
-    transport_positions = [0.0, 1.0, 0.0, 0.0, 0.0]  # Example transport position
-    self.move_arm(arm_name, transport_positions)
+        self.armMotors[3].setPosition(-1.5)
+        self.step(100 * TIME_STEP)
 
-    # Simulate moving to the destination
-    print("Moving to destination...")
-    self.move_forward(steps=200)  # Move forward to the destination
+        self.armMotors[2].setPosition(-0.4)
+        self.step(50 * TIME_STEP)
+        self.armMotors[4].setPosition(-1)
 
-    # Extend the arm to release position
-    print(f"Moving {arm_name} arm to release position...")
-    self.move_arm(arm_name, release_positions)
+        # Open gripper.
+        self.finger1.setPosition(self.fingerMaxPosition)
+        self.finger2.setPosition(self.fingerMaxPosition)
+        self.step(50 * TIME_STEP)
 
-    # Release the cube
-    print(f"Placing cube with {claw_name} claw...")
-    self.control_claw(claw_name, "release")
 
-    # Retract the arm to resting position
-    print(f"Retracting {arm_name} arm to resting position...")
-    resting_positions = [0.0, 1.0, 0.0, 0.0, 0.0]  # Example resting position
-    self.move_arm(arm_name, resting_positions)
 
     def run(self):
         """
         Main loop for the robot.
         """
+        # while self.step(self.timestep) != -1:
+        # grab_positions = [
+        #     0.0,  # Base joint rotation
+        #     0.5,  # Shoulder joint position
+        #     -1.2, # Elbow joint position
+        #     0.6,  # Wrist joint position
+        #     0.0   # End-effector rotation
+        #     ]
+        # print("Starting task...")
+        # self.execute_task("left", "left", grab_positions, action="grab")
+        # print("Task completed.")
         while self.step(self.timestep) != -1:
             if self.collecting_colors:
                 self.move_forward()  # Move forward to detect colors
@@ -282,4 +289,6 @@ def grab_and_place(self, arm_name, claw_name, grab_positions, release_positions)
 if __name__ == "__main__":
     pid = PIDController(Kp, Kd, Ki)
     robot = RobotController(pid)
-    robot.run()
+    robot.fold_arms()
+    # robot.close_grippers()
+    # robot.hand_up()
