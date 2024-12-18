@@ -4,6 +4,7 @@ from controller import Robot
 # Constants
 TIME_STEP = 32
 YOUBOT_MAX_VELOCITY = 10.0  # Adjusted for the YouBot's speed range
+WALL_DETECTION_THRESHOLD = 1000
 
 # PID Constants
 Kp = 0.9
@@ -42,8 +43,8 @@ class RobotController(Robot):
         # Motors
         self.wheels = [
             self.getDevice("wheel1"),  # Front-left
-            self.getDevice("wheel2"),  # Front-right
             self.getDevice("wheel3"),  # Rear-left
+            self.getDevice("wheel2"),  # Front-right
             self.getDevice("wheel4"),  # Rear-right
         ]
         for wheel in self.wheels:
@@ -89,7 +90,10 @@ class RobotController(Robot):
         self.fingerMaxPosition = self.finger1.getMaxPosition()
         
         
-        
+        # Initialize the front infrared sensors
+        self.wall_sensors = [self.getDevice(f"front-sensor-{i}") for i in range(3)]
+        for wall_sensor in self.wall_sensors:
+            wall_sensor.enable(self.timestep)
         
         # Line sensors
         self.line_sensors = [self.getDevice(f"lfs{i}") for i in range(8)]
@@ -184,27 +188,6 @@ class RobotController(Robot):
         self.wheels[1].setVelocity(right_velocity)  # Front-right
         self.wheels[2].setVelocity(left_velocity)  # Rear-left
         self.wheels[3].setVelocity(right_velocity)  # Rear-right
-
-    def detect_wall(self, threshold=500):
-        """
-        Detect a wall using three front-facing proximity sensors.
-        :param threshold: The distance value above which a wall is considered detected.
-        :return: True if a wall is detected, False otherwise.
-        """
-        # Assuming the three front-facing proximity sensors are named "ps0", "ps1", and "ps2"
-        front_sensors = [self.getDevice(f"ps{i}") for i in range(3)]
-        for sensor in front_sensors:
-             sensor.enable(self.timestep)
-
-        # Check the values of the front-facing sensors
-        for sensor in front_sensors:
-            if sensor.getValue() > threshold:  # Compare the value to the threshold
-                print(f"Wall detected by sensor: {sensor.getName()} with value {sensor.getValue()}")
-                return True
-
-        print("No wall detected by front sensors")
-        return False
-   
     
     def pick_up(self):
         self.armMotors[0].setPosition(1.7)
@@ -253,8 +236,53 @@ class RobotController(Robot):
         self.finger2.setPosition(self.fingerMaxPosition)
         self.step(50 * TIME_STEP)
 
+    def move_forward_1(self, velocity=2):
+        """
+        Move forward at a constant speed.
+        """
+        for wheel in self.wheels:
+            wheel.setVelocity(velocity)
 
-
+    def stop_moving(self):
+        """
+        Stop the robot's movement.
+        """
+        for wheel in self.wheels:
+            wheel.setVelocity(0)
+        for _ in range(100):
+            if self.step(self.timestep) == -1:
+                break
+    
+    def detect_wall(self):
+        """
+        Detect a wall using the front infrared sensor.
+        :return: True if a wall is detected, False otherwise.
+        """
+        for wall_sensor in self.wall_sensors:
+            if wall_sensor.getValue() < WALL_DETECTION_THRESHOLD:
+                print(f"Wall detected by sensor: {wall_sensor.getName()} with value {wall_sensor.getValue()}")
+                return True
+        print("No wall detected by front sensors")
+        return False
+    
+    def rotate_180(self):
+        """
+        Rotate the robot by 180 degrees in place.
+        """
+        print('start rotating')
+        rotation_velocity = YOUBOT_MAX_VELOCITY / 2
+        # Rotate in place by setting one side's wheels to rotation_velocity and the other side's wheels to 0
+        for i in range(2):
+            self.wheels[i].setVelocity(rotation_velocity)
+            self.wheels[i + 2].setVelocity(-rotation_velocity)
+        duration = 2000
+        for _ in range(duration):
+            for wheel in self.wheels:
+                print(f'{wheel.getName()} speed is {wheel.getVelocity()}')
+            if self.step(self.timestep) == -1:
+                break
+        print('finish rotating')
+    
     def run(self):
         """
         Main loop for the robot.
@@ -271,24 +299,31 @@ class RobotController(Robot):
         # self.execute_task("left", "left", grab_positions, action="grab")
         # print("Task completed.")
         while self.step(self.timestep) != -1:
-            if self.collecting_colors:
-                self.move_forward()  # Move forward to detect colors
+            if False:
+                print('collecting colors')
+                self.move_forward_1()  # Move forward to detect colors
                 cameraArray = self.camera.getImageArray()
                 if cameraArray:
                     detected_color = self.detect_color(cameraArray)
+                    print(f'detected color is: {detected_color}')
                     if detected_color != "Unknown" and detected_color not in self.colors_detected:
                         self.colors_detected.append(detected_color)
                         print(f"Collected color: {detected_color}")
+                    print(len(self.colors_detected))
                 if len(self.colors_detected) == 4:
                     self.collecting_colors = False
             else:
-                # Implement rest of the pseudocode logic here
-                pass
+                if self.detect_wall():
+                    self.stop_moving()
+                    self.rotate_180()
+                    self.stop_moving()
+                else:
+                    self.move_forward_1()
 
 
 if __name__ == "__main__":
     pid = PIDController(Kp, Kd, Ki)
     robot = RobotController(pid)
-    robot.fold_arms()
+    robot.run()
     # robot.close_grippers()
     # robot.hand_up()
