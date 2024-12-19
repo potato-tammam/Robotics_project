@@ -53,40 +53,70 @@ class RobotController(Robot):
         """
         Initialize the arms and claws with explicit joint values for positions.
         """
-        self.armMotors = []
-        self.armMotors.append(self.getDevice("arm1"))
-        self.armMotors.append(self.getDevice("arm2"))
-        self.armMotors.append(self.getDevice("arm3"))
-        self.armMotors.append(self.getDevice("arm4"))
-        self.armMotors.append(self.getDevice("arm5"))
+        self.armMotors1 = []  #motors for arm 1
+        self.armMotors2 = []  #motors for arm 2
+        
+        self.armMotors1.append(self.getDevice("arm1"))
+        self.armMotors1.append(self.getDevice("arm2"))
+        self.armMotors1.append(self.getDevice("arm3"))
+        self.armMotors1.append(self.getDevice("arm4"))
+        self.armMotors1.append(self.getDevice("arm5"))
+        
+        self.armMotors2.append(self.getDevice("front arm1"))
+        self.armMotors2.append(self.getDevice("front arm2"))
+        self.armMotors2.append(self.getDevice("front arm3"))
+        self.armMotors2.append(self.getDevice("front arm4"))
+        self.armMotors2.append(self.getDevice("front arm5"))
+        
         # Set the maximum motor velocity.
-        self.armMotors[0].setVelocity(1.5) # maxVelocity = 1.5
-        self.armMotors[1].setVelocity(1.5)
-        self.armMotors[2].setVelocity(1.5)
-        self.armMotors[3].setVelocity(0.5)
-        self.armMotors[4].setVelocity(1.5)
+        for arm in self.armMotors1 :
+            arm.setVelocity(1.5)
 
-        #! Initialize arm position sensors.
+        for arm in self.armMotors2 :
+            arm.setVelocity(1.5)
+            
+        # Initialize arm position sensors.
         # These sensors can be used to get the current 
         # joint position and monitor the joint movements.
-        self.armPositionSensors = []
-        self.armPositionSensors.append(self.getDevice("arm1sensor"))
-        self.armPositionSensors.append(self.getDevice("arm2sensor"))
-        self.armPositionSensors.append(self.getDevice("arm3sensor"))
-        self.armPositionSensors.append(self.getDevice("arm4sensor"))
-        self.armPositionSensors.append(self.getDevice("arm5sensor"))
-        for sensor in self.armPositionSensors:
+        self.arm1PositionSensors = []
+        self.arm2PositionSensors = []
+        
+        self.arm1PositionSensors.append(self.getDevice("arm1sensor"))
+        self.arm1PositionSensors.append(self.getDevice("arm2sensor"))
+        self.arm1PositionSensors.append(self.getDevice("arm3sensor"))
+        self.arm1PositionSensors.append(self.getDevice("arm4sensor"))
+        self.arm1PositionSensors.append(self.getDevice("arm5sensor"))
+        
+        self.arm2PositionSensors.append(self.getDevice("front arm1sensor"))
+        self.arm2PositionSensors.append(self.getDevice("front arm2sensor"))
+        self.arm2PositionSensors.append(self.getDevice("front arm3sensor"))
+        self.arm2PositionSensors.append(self.getDevice("front arm4sensor"))
+        self.arm2PositionSensors.append(self.getDevice("front arm5sensor"))        
+        
+        for sensor in self.arm1PositionSensors:
             sensor.enable(TIME_STEP)
-
-        #! Initialize gripper motors.
-        self.finger1 = self.getDevice("finger::left")
-        self.finger2 = self.getDevice("finger::right")
+            
+        for sensor in self.arm2PositionSensors:
+            sensor.enable(TIME_STEP)
+            
+        # Initialize gripper motors.
+        self.Arm1finger1 = self.getDevice("finger::left")
+        self.Arm1finger2 = self.getDevice("finger::right")
+        
+        self.Arm2finger1 = self.getDevice("front finger::left")
+        self.Arm2finger2 = self.getDevice("front finger::right")
+                
         # Set the maximum motor velocity.
-        self.finger1.setVelocity(1.5)
-        self.finger2.setVelocity(1.5) # 0.03
+        
+        self.Arm1finger1.setVelocity(1.5)
+        self.Arm1finger2.setVelocity(1.5) # 0.03
+        
+        self.Arm2finger1.setVelocity(1.5)
+        self.Arm2finger2.setVelocity(1.5)
+        
         # Read the miminum and maximum position of the gripper motors.
-        self.fingerMinPosition = self.finger1.getMinPosition()
-        self.fingerMaxPosition = self.finger1.getMaxPosition()
+        self.fingerMinPosition = self.Arm1finger1.getMinPosition()
+        self.fingerMaxPosition = self.Arm1finger1.getMaxPosition()
         
         
         
@@ -206,51 +236,112 @@ class RobotController(Robot):
         return False
    
     
-    def pick_up(self):
-        self.armMotors[0].setPosition(1.7)
-        self.armMotors[1].setPosition(-1)
-        self.armMotors[2].setPosition(-1)
-        self.armMotors[3].setPosition(0)
-        self.finger1.setPosition(self.fingerMaxPosition)
-        self.finger2.setPosition(self.fingerMaxPosition)
+    def wait_until_position_reached(self, arm, target_positions, tolerance=0.01):
+        sensors = self.arm1PositionSensors if arm == 1 else self.arm2PositionSensors
+        while True:
+            all_reached = False
+            for i, sensor in enumerate(sensors):
+                if abs(sensor.getValue() - target_positions[i]) > tolerance:
+                    print("not there yet")
+                    print(abs(sensor.getValue() - target_positions[i]) > tolerance)
+                    print(abs(sensor.getValue() - target_positions[i]))
+                    all_reached = False
+  
+                    break
 
-    def close_grippers(self):
-        self.finger1.setPosition(0.013)     # Close gripper.
-        self.finger2.setPosition(0.013)
+            if all_reached:
+                print("I am there ")
+                break
+            self.step(TIME_STEP)  # Step simulation to allow movement
 
-    def hand_up(self):
-        self.armMotors[0].setPosition(0)
-        self.armMotors[1].setPosition(0)
-        self.armMotors[2].setPosition(0)
-        self.armMotors[3].setPosition(0)
-        self.armMotors[4].setPosition(0)
+    def pick_up(self, arm):
+        if arm == 1:
+            target_positions = [0.05, -0.6, -0.3, -0.85, 0]
+            for i, motor in enumerate(self.armMotors1):
+                motor.setPosition(target_positions[i])
+            self.Arm1finger1.setPosition(self.fingerMaxPosition)
+            self.Arm1finger2.setPosition(self.fingerMaxPosition)
+            self.wait_until_position_reached(1, target_positions)
+            # self.close_grippers(1)
 
-    def fold_arms(self):
-        self.armMotors[0].setPosition(-2.9)
-        self.armMotors[1].setPosition(1.5)
-        self.armMotors[2].setPosition(-2.6)
-        self.armMotors[3].setPosition(1.7)
-        self.armMotors[4].setPosition(0)
+            
+        elif arm == 2:
+            target_positions = [0.05, -0.6, -0.3, -0.85, 0]
+            for i, motor in enumerate(self.armMotors2):
+                motor.setPosition(target_positions[i])
+            self.wait_until_position_reached(2, target_positions)
+            self.Arm2finger1.setPosition(self.fingerMaxPosition)
+            self.Arm2finger2.setPosition(self.fingerMaxPosition)
+        else:
+            print("Please set the arm")
+
+
+    def close_grippers(self , arm):
+        if arm==1:
+          
+            self.Arm1finger1.setPosition(0.001)    
+            self.Arm1finger2.setPosition(0.001)
+            self.step(100 * TIME_STEP)
+        elif arm==2:
+            self.Arm2finger1.setPosition(0)     
+            self.Arm2finger2.setPosition(0)
+        else:
+            print("please set the arm ")
+
+
+    def hand_up(self,arm):
+        if arm==1:
+            self.armMotors1[0].setPosition(0)
+            self.armMotors1[1].setPosition(0)
+            self.armMotors1[2].setPosition(0)
+            self.armMotors1[3].setPosition(0)
+            self.armMotors1[4].setPosition(0)
+        elif arm==2:
+            self.armMotors2[0].setPosition(0)
+            self.armMotors2[1].setPosition(0)
+            self.armMotors2[2].setPosition(0)
+            self.armMotors2[3].setPosition(0)
+            self.armMotors2[4].setPosition(0)
+        else:
+            print("please set the arm ")
+       
+
+    def fold_arms(self , arm):
+        if arm==1:
+            self.armMotors1[0].setPosition(-2.9)
+            self.armMotors1[1].setPosition(1.5)
+            self.armMotors1[2].setPosition(-2.6)
+            self.armMotors1[3].setPosition(1.7)
+            self.armMotors1[4].setPosition(0)
+        elif arm ==2:
+            self.armMotors2[0].setPosition(-2.9)
+            self.armMotors2[1].setPosition(1.5)
+            self.armMotors2[2].setPosition(-2.6)
+            self.armMotors2[3].setPosition(1.7)
+            self.armMotors2[4].setPosition(0)
+        else:
+            print("error please set the arm")
+        
 
     def drop(self):
         # Move arm down
-        self.armMotors[3].setPosition(0)
-        self.armMotors[2].setPosition(-0.3)
+        self.armMotors1[3].setPosition(0)
+        self.armMotors1[2].setPosition(-0.3)
         self.step(100 * TIME_STEP)
 
-        self.armMotors[1].setPosition(-1.0)
+        self.armMotors1[1].setPosition(-1.0)
         self.step(100 * TIME_STEP)
 
-        self.armMotors[3].setPosition(-1.5)
+        self.armMotors1[3].setPosition(-1.5)
         self.step(100 * TIME_STEP)
 
-        self.armMotors[2].setPosition(-0.4)
+        self.armMotors1[2].setPosition(-0.4)
         self.step(50 * TIME_STEP)
-        self.armMotors[4].setPosition(-1)
+        self.armMotors1[4].setPosition(-1)
 
         # Open gripper.
-        self.finger1.setPosition(self.fingerMaxPosition)
-        self.finger2.setPosition(self.fingerMaxPosition)
+        self.Arm1finger1.setPosition(self.fingerMaxPosition)
+        self.Arm1finger2.setPosition(self.fingerMaxPosition)
         self.step(50 * TIME_STEP)
 
 
@@ -289,6 +380,13 @@ class RobotController(Robot):
 if __name__ == "__main__":
     pid = PIDController(Kp, Kd, Ki)
     robot = RobotController(pid)
-    robot.fold_arms()
-    # robot.close_grippers()
+    # robot.fold_arms(2)
+    # robot.fold_arms(1)
+    
+    robot.pick_up(1)
+    print("reaching")
+    robot.close_grippers(1)
+# if (robot.pick_up(1)):
+#     print("closing")
+#     robot.close_grippers(1)
     # robot.hand_up()
