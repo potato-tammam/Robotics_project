@@ -236,42 +236,38 @@ class RobotController(Robot):
         return False
    
     
-    def wait_until_position_reached(self, arm, target_positions, tolerance=0.01):
-        sensors = self.arm1PositionSensors if arm == 1 else self.arm2PositionSensors
-        while True:
-            all_reached = False
-            for i, sensor in enumerate(sensors):
-                if abs(sensor.getValue() - target_positions[i]) > tolerance:
-                    print("not there yet")
-                    print(abs(sensor.getValue() - target_positions[i]) > tolerance)
-                    print(abs(sensor.getValue() - target_positions[i]))
-                    all_reached = False
+    # def wait_until_position_reached(self, arm, target_positions, tolerance=0.01):
+    #     sensors = self.arm1PositionSensors if arm == 1 else self.arm2PositionSensors
+    #     while True:
+    #         all_reached = False
+    #         for i, sensor in enumerate(sensors):
+    #             if abs(sensor.getValue() - target_positions[i]) > tolerance:
+    #                 print("not there yet")
+    #                 print(abs(sensor.getValue() - target_positions[i]) > tolerance)
+    #                 print(abs(sensor.getValue() - target_positions[i]))
+    #                 all_reached = False
   
-                    break
+    #                 break
 
-            if all_reached:
-                print("I am there ")
-                break
-            self.step(TIME_STEP)  # Step simulation to allow movement
+    #         if all_reached:
+    #             print("I am there ")
+    #             break
+    #         self.step(TIME_STEP)  # Step simulation to allow movement
 
     def pick_up(self, arm):
         if arm == 1:
-            target_positions = [0.05, -0.6, -0.3, -0.85, 0]
+            target_positions = [0.05, -0.63, -0.3, -0.88, 0]
             for i, motor in enumerate(self.armMotors1):
                 motor.setPosition(target_positions[i])
-            self.Arm1finger1.setPosition(self.fingerMaxPosition)
-            self.Arm1finger2.setPosition(self.fingerMaxPosition)
-            self.wait_until_position_reached(1, target_positions)
-            # self.close_grippers(1)
+                
+
 
             
         elif arm == 2:
-            target_positions = [0.05, -0.6, -0.3, -0.85, 0]
+            target_positions = [0.05, -0.63, -0.3, -0.88, 0]
             for i, motor in enumerate(self.armMotors2):
                 motor.setPosition(target_positions[i])
-            self.wait_until_position_reached(2, target_positions)
-            self.Arm2finger1.setPosition(self.fingerMaxPosition)
-            self.Arm2finger2.setPosition(self.fingerMaxPosition)
+
         else:
             print("Please set the arm")
 
@@ -323,29 +319,62 @@ class RobotController(Robot):
             print("error please set the arm")
         
 
-    def drop(self):
-        # Move arm down
-        self.armMotors1[3].setPosition(0)
-        self.armMotors1[2].setPosition(-0.3)
-        self.step(100 * TIME_STEP)
-
-        self.armMotors1[1].setPosition(-1.0)
-        self.step(100 * TIME_STEP)
-
-        self.armMotors1[3].setPosition(-1.5)
-        self.step(100 * TIME_STEP)
-
-        self.armMotors1[2].setPosition(-0.4)
-        self.step(50 * TIME_STEP)
-        self.armMotors1[4].setPosition(-1)
+    def open_gribbers(self, arm):
+        if arm==1:
+            self.Arm1finger1.setPosition(self.fingerMaxPosition)
+            self.Arm1finger2.setPosition(self.fingerMaxPosition)
+        elif arm==2:
+            self.Arm2finger1.setPosition(self.fingerMaxPosition)
+            self.Arm2finger2.setPosition(self.fingerMaxPosition)
+        else:
+            print("please set the arm ")
 
         # Open gripper.
-        self.Arm1finger1.setPosition(self.fingerMaxPosition)
-        self.Arm1finger2.setPosition(self.fingerMaxPosition)
-        self.step(50 * TIME_STEP)
 
 
 
+
+    def grab_And_retract(self,arm):
+        """
+        This mthod will take small boxes of the big boxes and fold the arm 
+
+        Args:
+            arm (1,2): which arm you trying to grab with 
+        """
+        
+        self.pick_up(arm)
+        print("reaching")
+        self.step(10 * TIME_STEP)
+        self.open_gribbers(arm)
+        print("oppening the gribbers")
+        self.step(25 * TIME_STEP)
+        print("closing the gribbers")
+        self.close_grippers(arm)
+        self.step(5 * TIME_STEP)
+        print("floding")
+        self.fold_arms(arm)
+        self.step(5 * TIME_STEP)
+        
+    def Put_Box_On_wall(self,arm):
+        """
+        This mthod will put small boxes on the wall and retract the arm 
+
+        Args:
+            arm (1,2): which arm you trying to grab with 
+        """
+        self.pick_up(arm)
+        print("reaching")
+        self.step(100 * TIME_STEP)
+        self.open_gribbers(arm)
+        print("oppening the gribbers")
+        self.step(25 * TIME_STEP)
+        print("retacting")
+        self.hand_up(arm)
+        self.step(10 * TIME_STEP)
+        print("closing the gribbers")
+        self.close_grippers(arm)
+
+       
     def run(self):
         """
         Main loop for the robot.
@@ -383,9 +412,9 @@ if __name__ == "__main__":
     # robot.fold_arms(2)
     # robot.fold_arms(1)
     
-    robot.pick_up(1)
-    print("reaching")
-    robot.close_grippers(1)
+    robot.grab_And_retract(1)
+    robot.step(100 * TIME_STEP)
+    robot.Put_Box_On_wall(1)
 # if (robot.pick_up(1)):
 #     print("closing")
 #     robot.close_grippers(1)
