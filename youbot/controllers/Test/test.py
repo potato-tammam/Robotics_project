@@ -4,7 +4,13 @@ from controller import Robot
 # Constants
 TIME_STEP = 32
 YOUBOT_MAX_VELOCITY = 10.0  # Adjusted for the YouBot's speed range
+Pick_Up_from_Box_Matrix =[0.05, -0.63, -0.3, -0.88, 0]
+Fold_Matrix = [-2.9, 1.5 , -2.6 , 1.7 , 0 ]
+# Constants
 
+WHEEL_RADIUS = 0.047  # Radius of the wheels in meters
+AXLE_LENGTH = 0.3  # Distance between the wheels in meters
+TURN_90_DURATION = 2.5  # Approximate duration for 90-degree turn (adjust for precision)
 # PID Constants
 Kp = 0.9
 Kd = 0.1
@@ -174,30 +180,71 @@ class RobotController(Robot):
         else:
             return "Unknown"
 
-    def move_forward(self, steps=None, velocity=2):
-        """
-        Move forward at a constant speed. If steps provided, move for that duration.
-        """
-        count = 0
-        while steps is None or count < steps:
-            for wheel in self.wheels:
-                wheel.setVelocity(velocity)
-            count += 1 if steps else 0
-            if self.step(self.timestep) == -1:
-                break
 
-    def rotate(self, angle):
-        """
-        Rotate the robot by a given angle in degrees.
-        """
-        velocity = YOUBOT_MAX_VELOCITY / 2
-        duration = int(abs(angle) / 90 * 10)  # Adjust duration based on angle
-        direction = -1 if angle < 0 else 1
-        for wheel in self.wheels:
-            wheel.setVelocity(velocity * direction)
-        for _ in range(duration):
-            if self.step(self.timestep) == -1:
+
+
+
+
+
+    def set_wheel_speeds(self , front_left, front_right, rear_left, rear_right):
+        """Set velocities for the omniwheels."""
+        
+        self.wheels[0].setVelocity(front_left)   # Front-left wheel
+        self.wheels[1].setVelocity(front_right)  # Front-right wheel
+        self.wheels[2].setVelocity(rear_left)    # Rear-left wheel
+        self.wheels[3].setVelocity(rear_right)   # Rear-right wheel
+
+    def turn_90(self):
+        """Turn the robot 90 degrees on the spot."""
+        angular_velocity = 2.0  # Set angular velocity for turning
+        duration = TURN_90_DURATION  # Adjust based on testing in Webots
+        
+        # Omni-wheel rotation configuration for turning in place
+        self.set_wheel_speeds(-angular_velocity, angular_velocity, -angular_velocity, angular_velocity)
+        start_time = self.getTime()
+        
+        while self.step(TIME_STEP) != -1:
+            if self.getTime() - start_time >= duration:
                 break
+        
+        self.set_wheel_speeds(0, 0, 0, 0)  # Stop the robot
+
+    def turn_180(self):
+        """Turn the robot 180 degrees on the spot."""
+        angular_velocity = 2.0  # Set angular velocity for turning
+        duration = TURN_90_DURATION * 2  # Twice the time for a 180-degree turn
+        
+        # Omni-wheel rotation configuration for turning in place
+        self.set_wheel_speeds(-angular_velocity, angular_velocity, -angular_velocity, angular_velocity)
+        start_time = self.getTime()
+        
+        while self.step(TIME_STEP) != -1:
+            if self.getTime() - start_time >= duration:
+                break
+        
+        self.set_wheel_speeds(0, 0, 0, 0)  # Stop the robot
+
+    def move_forward(self,distance):
+        """Move the robot forward by a specific distance."""
+        velocity = 2.0  # Linear velocity
+        duration = distance / (velocity * WHEEL_RADIUS)  # Duration based on distance and speed
+        
+        # Omni-wheel configuration for forward motion
+        self.set_wheel_speeds(velocity, velocity, velocity, velocity)
+        start_time = self.getTime()
+        
+        while self.step(TIME_STEP) != -1:
+            if self.getTime() - start_time >= duration:
+                break
+        
+        self.set_wheel_speeds(0, 0, 0, 0)  # Stop the robot
+
+    # Example usage
+    # Uncomment these lines to test
+    # turn_90()
+    # turn_180()
+    # move_forward(1.0)  # Move forward by 1 meter
+
 
     def follow_line(self):
         """
@@ -254,9 +301,9 @@ class RobotController(Robot):
     #             break
     #         self.step(TIME_STEP)  # Step simulation to allow movement
 
-    def pick_up(self, arm):
+    def move_arm(self, arm, matrix):
         if arm == 1:
-            target_positions = [0.05, -0.63, -0.3, -0.88, 0]
+            target_positions = matrix
             for i, motor in enumerate(self.armMotors1):
                 motor.setPosition(target_positions[i])
                 
@@ -264,7 +311,7 @@ class RobotController(Robot):
 
             
         elif arm == 2:
-            target_positions = [0.05, -0.63, -0.3, -0.88, 0]
+            target_positions = matrix
             for i, motor in enumerate(self.armMotors2):
                 motor.setPosition(target_positions[i])
 
@@ -287,34 +334,23 @@ class RobotController(Robot):
 
     def hand_up(self,arm):
         if arm==1:
-            self.armMotors1[0].setPosition(0)
-            self.armMotors1[1].setPosition(0)
-            self.armMotors1[2].setPosition(0)
-            self.armMotors1[3].setPosition(0)
-            self.armMotors1[4].setPosition(0)
+            for i, motor in enumerate(self.armMotors2):
+                motor.setPosition(0)
         elif arm==2:
-            self.armMotors2[0].setPosition(0)
-            self.armMotors2[1].setPosition(0)
-            self.armMotors2[2].setPosition(0)
-            self.armMotors2[3].setPosition(0)
-            self.armMotors2[4].setPosition(0)
+            for i, motor in enumerate(self.armMotors2):
+                motor.setPosition(0)
         else:
             print("please set the arm ")
        
 
     def fold_arms(self , arm):
+        target_postion = Fold_Matrix
         if arm==1:
-            self.armMotors1[0].setPosition(-2.9)
-            self.armMotors1[1].setPosition(1.5)
-            self.armMotors1[2].setPosition(-2.6)
-            self.armMotors1[3].setPosition(1.7)
-            self.armMotors1[4].setPosition(0)
+            for i, motor in enumerate(self.armMotors1):
+                motor.setPosition(target_postion[i])
         elif arm ==2:
-            self.armMotors2[0].setPosition(-2.9)
-            self.armMotors2[1].setPosition(1.5)
-            self.armMotors2[2].setPosition(-2.6)
-            self.armMotors2[3].setPosition(1.7)
-            self.armMotors2[4].setPosition(0)
+            for i, motor in enumerate(self.armMotors2):
+                motor.setPosition(target_postion[i])
         else:
             print("error please set the arm")
         
@@ -342,7 +378,7 @@ class RobotController(Robot):
             arm (1,2): which arm you trying to grab with 
         """
         
-        self.pick_up(arm)
+        self.move_arm(arm , Pick_Up_from_Box_Matrix)
         print("reaching")
         self.step(10 * TIME_STEP)
         self.open_gribbers(arm)
@@ -362,7 +398,7 @@ class RobotController(Robot):
         Args:
             arm (1,2): which arm you trying to grab with 
         """
-        self.pick_up(arm)
+        self.move_arm(arm , Pick_Up_from_Box_Matrix)
         print("reaching")
         self.step(100 * TIME_STEP)
         self.open_gribbers(arm)
