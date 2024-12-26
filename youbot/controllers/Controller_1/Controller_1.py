@@ -102,13 +102,6 @@ class RobotController(Robot):
             if detected_color != "Unknown" and detected_color not in self.colors_detected:
                 self.colors_detected.append(detected_color)
                 print(f"Collected color: {detected_color}")
-
-
-    def clamp_velocity(self, velocity):
-        """
-        Clamp motor velocities within allowed limits.
-        """
-        return max(-YOUBOT_MAX_VELOCITY, min(YOUBOT_MAX_VELOCITY, velocity))
     
     def set_velocities(self, wheel1v=None, wheel2v=None, wheel3v=None, wheel4v=None):
         if wheel1v:
