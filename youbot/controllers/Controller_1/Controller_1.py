@@ -8,10 +8,10 @@ import time
 # Pick_Up_from_Box_Matrix3 = [0.0, -1.0, -0.32, -0.88, 0]
 # Pick_Up_from_Box_Matrix4 = [0.0, -1.5, -0.32, -0.88, 0]
 Pick_Up_from_Box_Matrix = [
-    [-0.08, -0.7, -0.32, -0.88, 0],
-    [-0.08, -0.85, -0.32, -0.88, 0],
-    [-0.08, -0.85, -0.35, -0.88, 0],
-    [-0.08, -0.85, -0.35, -0.88, 0]
+    [-0.0, -0.72, -0.32, -0.88, 0],
+    [-0.0, -0.85, -0.35, -0.88, 0],
+    [-0.0, -0.85, -0.32, -0.88, 0],
+    [-0.0, -0.85, -0.39, -0.83, 0]
 ]
 # PUT_ON_WALL_MATRIX1 = [-0.00, -0.73, -0.32, -0.88, 0]
 # PUT_ON_WALL_MATRIX2 = [-0.00, -0.63, -0.32, -0.88, 0]
@@ -19,10 +19,10 @@ Pick_Up_from_Box_Matrix = [
 # PUT_ON_WALL_MATRIX4 = [-0.00, -0.7, -0.32, -0.88, 0]
 
 PUT_ON_WALL_MATRIX = [
-    [-0.00, -0.73, -0.32, -0.88, 0],
-    [-0.00, -0.63, -0.45, -0.88, 0],
-    [-0.00, -0.73, -0.35, -0.88, 0],
-    [-0.00, -0.64, -0.42, -0.88, 0]
+    [-0.00, -0.77, -0.34, -0.88, 0],
+    [-0.00, -0.67, -0.40, -0.88, 0],
+    [-0.00, -0.79, -0.33, -0.88, 0],
+    [-0.00, -0.73, -0.37, -0.88, 0]
 ]
 Fold_Matrix = [-2.9, 1.5, -2.6, 1.7, 0]
 
@@ -343,16 +343,23 @@ class RobotController(Robot):
         self.step(5 * TIME_STEP)
 
     def loop_Function(self , i):
-        self.grab_And_retract(1 , Pick_Up_from_Box_Matrix[i])
-        print(Pick_Up_from_Box_Matrix[i])
-        self.step(75 * TIME_STEP)
-        self.rotate_in_place(180)
-        self.step(25 * TIME_STEP)
-        if i== 0 :
-            self.grab_And_retract(2 , Pick_Up_from_Box_Matrix[i+1])
+        if i == 0:
+            self.grab_And_retract(1 , Pick_Up_from_Box_Matrix[i])
+            print(Pick_Up_from_Box_Matrix[i])
+            self.step(75 * TIME_STEP)
         else :
-            self.move_backward(distance=COLOR_SQUARE_SIDE_LENGTH )
-            self.grab_And_retract(2 , Pick_Up_from_Box_Matrix[i+1])
+            self.grab_And_retract(1 , Pick_Up_from_Box_Matrix[i])
+            print(Pick_Up_from_Box_Matrix[i])
+            self.step(75 * TIME_STEP)
+            self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH /4 )
+            print("Moved a bit ")
+            self.step(15 * TIME_STEP)
+            
+        self.rotate_in_place(180)
+        self.step(20 * TIME_STEP)
+    
+        self.grab_And_retract(2 , Pick_Up_from_Box_Matrix[i+1])
+    
         print(Pick_Up_from_Box_Matrix[i+1])
         self.step(75 * TIME_STEP)
         print("picked up cubes from the Box")
@@ -360,7 +367,7 @@ class RobotController(Robot):
             
             self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH * 7.5)
         else :
-            self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH * 7.12)
+            self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH * 7.2)
             
         self.step(75 * TIME_STEP)
         self.Put_Box_On_wall(1 ,PUT_ON_WALL_MATRIX[i] )
@@ -369,13 +376,16 @@ class RobotController(Robot):
         self.step(75 * TIME_STEP)
         self.rotate_in_place(179)
         self.step(25 * TIME_STEP)
+        self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH/4 )
+        print("Moved a bit ")
+        self.step(10 * TIME_STEP)
         self.Put_Box_On_wall(2 , PUT_ON_WALL_MATRIX[i+1])
         print(PUT_ON_WALL_MATRIX[i+1])
         
         self.step(75 * TIME_STEP)
         print(" put cubes on wall ")
         if i == 0:
-            self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH * 7.7)
+            self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH * 7.5)
         else:
             self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH * 2)
             
@@ -474,7 +484,7 @@ class RobotController(Robot):
                 if detected_color == self.colors_detected[0]:
                     COLOR_IN_HAND = detected_color
                     self.stop()
-                    self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2)
+                    self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 3)
                     self.stop()
                     print("Detected the desired color and stopped")
                     self.state = "ROTATING_90_DEGREES_COUNTER_CLOCKWISE"
@@ -486,7 +496,7 @@ class RobotController(Robot):
                 if detected_color == self.colors_detected[0]:
                     COLOR_IN_HAND = detected_color
                     self.stop()
-                    self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2)
+                    self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 3)
                     self.stop()
                     print("Detected the desired color and stopped")
                     self.rotate_in_place(90)
@@ -507,6 +517,8 @@ class RobotController(Robot):
             elif self.state == "ROTATING_90_DEGREES_COUNTER_CLOCKWISE":
                 self.rotate_in_place(90)
                 self.stop()
+                self.step(10*TIME_STEP)
+                self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH /9 )
                 print("turned 90 degrees counter clockwise and stopped")
                 self.state = "PICKING_UP_BOTH_BOXES"
 
@@ -526,7 +538,7 @@ class RobotController(Robot):
                 print(detected_color)
                 if detected_color == COLOR_IN_HAND and COLOR_IN_HAND != 'red':
                     self.stop()
-                    self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2)
+                    self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2.5)
                     self.stop()
                     print("Detected the desired color and stopped")
                     self.state = "ROTATING_90_DEGREES_CLOCKWISE_First"
@@ -557,3 +569,13 @@ class RobotController(Robot):
 if __name__ == "__main__":
     robot = RobotController()
     robot.run()
+    # robot.move_forward()
+    # detected_color = robot.detect_color(robot.camera.getImageArray())
+    # if detected_color == "yellow" :
+    #     robot.stop()
+    #     robot.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2.3)
+    #     robot.stop()
+    # robot.rotate_in_place(-90)
+    # robot.stop()
+    # robot.move_forward()
+    

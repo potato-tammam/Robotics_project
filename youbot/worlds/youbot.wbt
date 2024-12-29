@@ -43,49 +43,14 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.17402480500768905 -0.18141662858315752 -0.9678860336400956 4.721330034730634
-  position -0.29292941444135767 -8.655015954549091 3.436661423681172
+  orientation 0.07544290696011059 -0.9764524022250894 -0.20211153845899044 5.552880423779628
+  position -4.8398142050357595 -2.5379540866758123 3.3083125176024293
   follow "youBot"
 }
 TexturedBackground {
 }
 Youbot {
-  hidden position_0_0 171.7337566622542
-  hidden position_0_1 189.35118918505597
-  hidden position_0_2 171.58929646136633
-  hidden position_0_3 189.3381375901585
-  hidden position_4_0 -8.807666595722835e-06
-  hidden rotation_5 0 0 -1 8.807682983258066e-06
-  hidden position_5_0 0.0009913683845145219
-  hidden rotation_6 0 -1 0 0.0009913683845255857
-  hidden position_6_0 2.78058101168863e-06
-  hidden rotation_7 0 -1 0 2.780574247073945e-06
-  hidden position_7_0 5.606876630361152e-07
-  hidden rotation_8 0 -1 0 5.607273495860947e-07
-  hidden position_8_0 1.2948230083767143e-08
-  hidden position_9_0 -1.2632538021432842e-07
-  hidden position_9_1 3.531643074454215e-07
-  hidden translation_10 0 -1.2632538021432842e-07 0.09
-  hidden translation_11 0 -3.531643074454215e-07 0.09
-  hidden position_12_0 -7.4122507115586544e-06
-  hidden rotation_13 0 0 -1 7.412275552372088e-06
-  hidden position_13_0 -0.0010098534811396132
-  hidden rotation_14 0 1 0 0.0010098534810110823
-  hidden position_14_0 -4.2741544492123596e-06
-  hidden rotation_15 0 1 0 4.274114380359881e-06
-  hidden position_15_0 -5.469769260585755e-07
-  hidden rotation_16 0 1 0 5.470979139413201e-07
-  hidden position_16_0 3.7594761729846356e-08
-  hidden rotation_17 0 0 1 4.2146848510894035e-08
-  hidden position_17_0 3.577715908857203e-07
-  hidden position_17_1 -1.2767708278729062e-07
-  hidden translation_18 0 3.577715908857203e-07 0.09
-  hidden translation_19 0 1.2767708278729062e-07 0.09
-  hidden rotation_20 0 -1 0 4.195431938774227
-  hidden rotation_21 0 1 0 0.8556299696683777
-  hidden rotation_22 0 -0.9999999999999999 0 4.339892139662091
-  hidden rotation_23 0 1 0 0.8425783747709159
-  translation -0.45068092198737086 -2.1032983094764117 0.10147844573640549
+  translation -0.450933 -2.1333 0.101452
   rotation 0.0008990493719741723 -0.0004442490159976176 0.9999994971763927 3.1331768707740255
   controller "Controller_1"
   controllerArgs [
@@ -117,30 +82,6 @@ Youbot {
   numberOfArms 2
 }
 Youbot {
-  hidden position_0_0 5.036431956681594e-11
-  hidden position_0_1 -5.03597088332971e-11
-  hidden position_0_2 5.193367640225674e-11
-  hidden position_0_3 -5.193448292325199e-11
-  hidden position_2_0 -5.314791688561217e-06
-  hidden rotation_3 0 0 -1 8.7324364527831e-06
-  hidden position_3_0 -5.008678577553485e-07
-  hidden rotation_4 0 1 0 5.004660971089217e-07
-  hidden position_4_0 -7.7189993252731e-07
-  hidden rotation_5 0 0.9999999999999999 0 7.719894556396424e-07
-  hidden position_5_0 -9.444231855207799e-12
-  hidden position_6_0 1.939674964307684e-12
-  hidden position_7_0 -1.707941526082271e-11
-  hidden position_7_1 -1.7281798248162925e-11
-  hidden position_10_0 -5.314789339133009e-06
-  hidden rotation_11 0 0 -1 8.7324364527831e-06
-  hidden position_11_0 -5.008595012498912e-07
-  hidden rotation_12 0 1 0 5.004660971089217e-07
-  hidden position_12_0 -7.719033358952372e-07
-  hidden rotation_13 0 1 0 7.719894556396424e-07
-  hidden position_13_0 -9.11196721250774e-12
-  hidden position_14_0 4.791605347607109e-13
-  hidden position_15_0 -1.674051139106067e-11
-  hidden position_15_1 -1.7376453729567025e-11
   translation 1.5923504916579583 -2.2041350548631353 0.1013341109300587
   rotation 1.3834016044304233e-10 8.060316653710737e-08 0.9999999999999967 3.138829453281389
   name "youBot(1)"
@@ -341,7 +282,7 @@ SolidBox {
   }
 }
 SolidBox {
-  translation -0.74545 -2.1 0
+  translation -0.74545 -2.12 0
   name "left_cell_1"
   size 0.1 0.1 0.001
   appearance PBRAppearance {
@@ -349,6 +290,7 @@ SolidBox {
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
   translation -1.28545 -1.88 0
@@ -381,7 +323,7 @@ SolidBox {
   }
 }
 SolidBox {
-  translation -0.84545 -2.1 0
+  translation -0.84545 -2.12 0
   name "left_cell_2"
   size 0.1 0.1 0.001
   appearance PBRAppearance {
@@ -389,6 +331,7 @@ SolidBox {
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
   translation -1.29545 1.87 0
@@ -421,7 +364,7 @@ SolidBox {
   }
 }
 SolidBox {
-  translation -0.94545 -2.1 0
+  translation -0.94545 -2.12 0
   name "left_cell_3"
   size 0.1 0.1 0.001
   appearance PBRAppearance {
@@ -429,6 +372,7 @@ SolidBox {
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
   translation -1.28545 -0.63 0
@@ -461,7 +405,7 @@ SolidBox {
   }
 }
 SolidBox {
-  translation -1.04545 -2.1 0
+  translation -1.04545 -2.12 0
   name "left_cell_4"
   size 0.1 0.1 0.001
   appearance PBRAppearance {
@@ -469,6 +413,7 @@ SolidBox {
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
   translation -1.28545 0.62 0
