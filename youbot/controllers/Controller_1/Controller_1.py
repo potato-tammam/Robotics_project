@@ -478,6 +478,14 @@ class RobotController(Robot):
                 print("turned 90 degrees clockwise and stopped")
                 self.state = "DETECTING_COLOR_Forth"
                 
+            elif self.state == "ROTATING_90_DEGREES_CLOCKWISE_Second":
+                self.rotate_in_place(-90)
+                self.stop()
+                self.step(10*TIME_STEP)
+                self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH /3 )
+                print("turned 90 degrees clockwise and stopped")
+                self.state = "PICKING_UP_BOTH_BOXES"
+                
             elif self.state == "DETECTING_COLOR_Forth":
                 self.move_forward()
                 detected_color = self.detect_color(self.camera.getImageArray())
@@ -487,8 +495,12 @@ class RobotController(Robot):
                     self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 3)
                     self.stop()
                     print("Detected the desired color and stopped")
-                    self.state = "ROTATING_90_DEGREES_COUNTER_CLOCKWISE"
-                    
+                    self.state = "ROTATING_90_DEGREES_COUNTER_CLOCKWISE_First"
+                elif len(detected_color)  >= len(self.colors_detected) :
+                    self.stop()
+                    self.rotate_in_place(180)
+                    self.stop()
+                    self.state = "DETECTING_COLOR_BACK"
                     
             elif self.state == "DETECTING_COLOR_BACK":
                 self.move_forward()
@@ -502,7 +514,12 @@ class RobotController(Robot):
                     self.rotate_in_place(90)
                     self.stop()
                     print("turned 90 degrees clockwise and stopped")
-                self.state = "PICKING_UP_BOTH_BOXES"
+                    self.state = "PICKING_UP_BOTH_BOXES"
+                elif len(detected_color) >= len(self.colors_detected) :
+                    self.stop()
+                    self.rotate_in_place(180)
+                    self.stop()
+                    self.state = "DETECTING_COLOR_First"
 
                 # # the following condition works on its own, but haven't tested it with the previous condition.
                 # # when detecting the four colors on line change direction.
@@ -514,13 +531,19 @@ class RobotController(Robot):
                 #         # change the state. the nonsense is just for testing.
                 #         self.state = "hisdfs"
 
-            elif self.state == "ROTATING_90_DEGREES_COUNTER_CLOCKWISE":
+            elif self.state == "ROTATING_90_DEGREES_COUNTER_CLOCKWISE_First":
                 self.rotate_in_place(90)
                 self.stop()
                 self.step(10*TIME_STEP)
                 self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH /9 )
                 print("turned 90 degrees counter clockwise and stopped")
                 self.state = "PICKING_UP_BOTH_BOXES"
+                
+            elif self.state == "ROTATING_90_DEGREES_COUNTER_CLOCKWISE_SECOND":
+                self.rotate_in_place(90)
+                self.stop()
+                print("turned 90 degrees counter clockwise and stopped")
+                self.state = "DETECTING_COLOR_BACK"
 
             elif self.state == "PICKING_UP_BOTH_BOXES":
                 
@@ -543,24 +566,32 @@ class RobotController(Robot):
                     print("Detected the desired color and stopped")
                     self.state = "ROTATING_90_DEGREES_CLOCKWISE_First"
                     
-                # elif detected_color == 'yellow' and len(self.colors_detected) != 4 :
-                #     self.stop()
-                #     self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2)
-                #     self.stop()
-                #     self.state = "BACK_FROM_THE_FIRST_COLOR"
-                elif detected_color == "red" :
+                elif detected_color == 'yellow' and len(self.colors_detected) != 4 :
+                    self.stop()
+                    self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2)
+                    self.stop()
+                    self.state = "BACK_FROM_THE_FIRST_COLOR"
+                    
+                elif detected_color == "red" and "red" != self.colors_detected[0]: 
                     self.stop()
                     self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2)
                     self.stop()
                     print("Detected the desired color and stopped")
-                    self.state = "soso"
+                    self.state = "BACK_FROM_THE_LAST_COLOR"
+
             
             elif self.state == "BACK_FROM_THE_LAST_COLOR" :
                 print("comming back from the last color")
-                self.rotate_in_place(90)
+                self.rotate_in_place(180)
                 self.stop()
                 self.state == "DETECTING_COLOR_BACK"
                 
+            elif self.state == "BACK_FROM_THE_FIRST_COLOR"  :
+                print("comming back from the First color")
+                self.rotate_in_place(180)
+                self.stop()
+                self.state == "DETECTING_COLOR_Forth"
+                  
             else:
                 print("quit")
                 break
