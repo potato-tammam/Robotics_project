@@ -496,11 +496,11 @@ class RobotController(Robot):
                     self.stop()
                     print("Detected the desired color and stopped")
                     self.state = "ROTATING_90_DEGREES_COUNTER_CLOCKWISE_First"
-                elif len(detected_color)  >= len(self.colors_detected) :
-                    self.stop()
-                    self.rotate_in_place(180)
-                    self.stop()
-                    self.state = "DETECTING_COLOR_BACK"
+                # elif len(detected_color) >= len(self.colors_detected) :
+                #     self.stop()
+                #     self.rotate_in_place(180)
+                #     self.stop()
+                #     self.state = "DETECTING_COLOR_BACK"
                     
             elif self.state == "DETECTING_COLOR_BACK":
                 self.move_forward()
@@ -515,11 +515,11 @@ class RobotController(Robot):
                     self.stop()
                     print("turned 90 degrees clockwise and stopped")
                     self.state = "PICKING_UP_BOTH_BOXES"
-                elif len(detected_color) >= len(self.colors_detected) :
-                    self.stop()
-                    self.rotate_in_place(180)
-                    self.stop()
-                    self.state = "DETECTING_COLOR_First"
+                # elif len(detected_color) >= len(self.colors_detected) :
+                #     self.stop()
+                #     self.rotate_in_place(180)
+                #     self.stop()
+                #     self.state = "DETECTING_COLOR_First"
 
                 # # the following condition works on its own, but haven't tested it with the previous condition.
                 # # when detecting the four colors on line change direction.
