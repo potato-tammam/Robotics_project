@@ -33,9 +33,8 @@ YOUBOT_MAX_VELOCITY = 10.0
 LINE_DESIRED_ERROR = 0
 LINE_DETECTION_THRESHOLD = 1000
 YOUBOT_WHEEL_RADIUS = 0.05  # meters
-COLOR_SQUARE_SIDE_LENGTH = 0.1
+COLOR_SQUARE_SIDE_LENGTH = 0.0001
 YOUBOT_WHEEL_BASE = 0.5
-
 
 # Robot Controller Class
 class RobotController(Robot):
@@ -461,7 +460,7 @@ class RobotController(Robot):
                     self.state = "SKIPPING_THE_LAST_COLOR_SQUARE"
 
             elif self.state == "SKIPPING_THE_LAST_COLOR_SQUARE":
-                self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH)
+                self.move_forward(distance=0.1 * 2)
                 print("Skipped the last color square")
                 self.state = "DETECTING_LINE"
 
@@ -482,7 +481,6 @@ class RobotController(Robot):
                 self.rotate_in_place(-90)
                 self.stop()
                 self.step(10*TIME_STEP)
-                self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH /3 )
                 print("turned 90 degrees clockwise and stopped")
                 self.state = "PICKING_UP_BOTH_BOXES"
                 
@@ -492,8 +490,7 @@ class RobotController(Robot):
                 if detected_color == self.colors_detected[0]:
                     COLOR_IN_HAND = detected_color
                     self.stop()
-                    self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 3)
-                    self.stop()
+                    self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2)
                     print("Detected the desired color and stopped")
                     self.state = "ROTATING_90_DEGREES_COUNTER_CLOCKWISE_First"
                 # elif len(detected_color) >= len(self.colors_detected) :
@@ -508,7 +505,7 @@ class RobotController(Robot):
                 if detected_color == self.colors_detected[0]:
                     COLOR_IN_HAND = detected_color
                     self.stop()
-                    self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 3)
+                    self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2)
                     self.stop()
                     print("Detected the desired color and stopped")
                     self.rotate_in_place(90)
@@ -535,7 +532,7 @@ class RobotController(Robot):
                 self.rotate_in_place(90)
                 self.stop()
                 self.step(10*TIME_STEP)
-                self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH /9 )
+                # self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH /2 )
                 print("turned 90 degrees counter clockwise and stopped")
                 self.state = "PICKING_UP_BOTH_BOXES"
                 
@@ -561,7 +558,7 @@ class RobotController(Robot):
                 print(detected_color)
                 if detected_color == COLOR_IN_HAND and COLOR_IN_HAND != 'red':
                     self.stop()
-                    self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2.5)
+                    self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2)
                     self.stop()
                     print("Detected the desired color and stopped")
                     self.state = "ROTATING_90_DEGREES_CLOCKWISE_First"
