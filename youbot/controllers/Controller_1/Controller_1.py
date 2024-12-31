@@ -349,11 +349,11 @@ class RobotController(Robot):
             self.grab_And_retract(1 , Pick_Up_from_Box_Matrix[i])
             print(Pick_Up_from_Box_Matrix[i])
             self.step(75 * TIME_STEP)
-            self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH /4 )
+            self.move_forward(distance= 0.025)
             print("Moved a bit ")
             self.step(15 * TIME_STEP)
             
-        self.rotate_in_place(180)
+        self.rotate_in_place(-180)
         self.step(20 * TIME_STEP)
     
         self.grab_And_retract(2 , Pick_Up_from_Box_Matrix[i+1])
@@ -363,9 +363,9 @@ class RobotController(Robot):
         print("picked up cubes from the Box")
         if i == 0:
             
-            self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH * 7.5)
+            self.move_forward(distance= 0.75)
         else :
-            self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH * 7.2)
+            self.move_forward(distance= 0.72)
             
         self.step(75 * TIME_STEP)
         self.Put_Box_On_wall(1 ,PUT_ON_WALL_MATRIX[i] )
@@ -374,7 +374,7 @@ class RobotController(Robot):
         self.step(75 * TIME_STEP)
         self.rotate_in_place(179)
         self.step(25 * TIME_STEP)
-        self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH/4 )
+        self.move_forward(distance= 0.025 )
         print("Moved a bit ")
         self.step(10 * TIME_STEP)
         self.Put_Box_On_wall(2 , PUT_ON_WALL_MATRIX[i+1])
@@ -383,9 +383,9 @@ class RobotController(Robot):
         self.step(75 * TIME_STEP)
         print(" put cubes on wall ")
         if i == 0:
-            self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH * 7.5)
+            self.move_forward(distance= 0.75)
         else:
-            self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH * 2)
+            self.move_forward(distance= 0.2)
             
         self.step(20 * TIME_STEP)
 
@@ -481,12 +481,17 @@ class RobotController(Robot):
                     self.stop()
                     print("Detected the desired color and stopped")
                     self.state = "ROTATING_90_DEGREES_COUNTER_CLOCKWISE"
+                    
             elif self.state == 'ROTATING_90_DEGREES_COUNTER_CLOCKWISE':
                 self.rotate_in_place(90)
                 print("turned 90 degrees counter clockwise")
-                self.state = 'MOVING_FORWARD'
+                self.state = 'PICKING_CUBE'
+            
             elif self.state == 'PICKING_CUBE':
-                self.move_forward()
+                self.move_forward(distance=0.03)
+                self.loop_Function(i=0)
+                self.stop()
+                
             else:
                 print("quit")
                 break
