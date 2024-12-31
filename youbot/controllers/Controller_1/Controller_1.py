@@ -33,7 +33,7 @@ YOUBOT_MAX_VELOCITY = 10.0
 LINE_DESIRED_ERROR = 0
 LINE_DETECTION_THRESHOLD = 1000
 YOUBOT_WHEEL_RADIUS = 0.05  # meters
-COLOR_SQUARE_SIDE_LENGTH = 0.0001
+COLOR_SQUARE_SIDE_LENGTH = 0.003
 YOUBOT_WHEEL_BASE = 0.5
 
 # Robot Controller Class
@@ -460,12 +460,12 @@ class RobotController(Robot):
                     self.state = "SKIPPING_THE_LAST_COLOR_SQUARE"
 
             elif self.state == "SKIPPING_THE_LAST_COLOR_SQUARE":
-                self.move_forward(distance=0.1 * 2)
+                self.move_forward(distance=0.12, velocity=YOUBOT_MAX_VELOCITY)
                 print("Skipped the last color square")
                 self.state = "DETECTING_LINE"
 
             elif self.state == "DETECTING_LINE":
-                self.move_forward()
+                self.move_forward(velocity=YOUBOT_MAX_VELOCITY*0.7)
                 if self.detected_a_line():
                     self.stop()
                     print("detected a line and stopped")
