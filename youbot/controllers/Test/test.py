@@ -317,8 +317,223 @@ class RobotController(Robot):
 
         else:
             print("Please set the arm")
+    def center_on_line_with_pid(self):
+        """
+        Adjust the wheel velocities using PID control to center the robot on the line
+        by moving sideways without rotating. Ensures the line is centered under all 8 sensors.
+        The velocity never exceeds 10 units.
+        """
+        # PID parameters (tune these values based on your robot's behavior)
+        Kp = 0.05  # Proportional gain
+        Ki = 0.01  # Integral gain
+        Kd = 0.02  # Derivative gain
+
+        # Variables for PID control
+        integral_front = 0
+        last_error_front = 0
+        integral_back = 0
+        last_error_back = 0
 
 
+        # Tolerance for stopping (adjust based on sensitivity requirements)
+        tolerance = 5  # Minimum error to consider the line centered
+
+        # Base velocity for the wheels (used for lateral movement)
+        base_velocity = 10  # Ensure this doesn't exceed the maximum velocity
+
+        while self.step(self.timestep) != -1:
+            # Read sensor values
+            front_left_outer = self.line_sensor_left_outer.getValue()
+            front_left_inner = self.line_sensor_left_inner.getValue()
+            front_right_inner = self.line_sensor_right_outer.getValue()
+            front_right_outer = self.line_sensor_right_inner.getValue()
+
+            back_left_outer = self.line_sensor_left_outer_back.getValue()
+            back_left_inner = self.line_sensor_left_inner_back.getValue()
+            back_right_inner = self.line_sensor_left_inner_back.getValue()
+            back_right_outer = self.line_sensor_right_outer_back.getValue()
+
+            # Calculate errors for front and back sensors
+            front_left_error = (front_left_outer + front_left_inner) / 2
+            front_right_error = (front_right_inner + front_right_outer) / 2
+            front_total_error = front_left_error - front_right_error
+
+            back_left_error = (back_left_outer + back_left_inner) / 2
+            back_right_error = (back_right_inner + back_right_outer) / 2
+            back_total_error = back_left_error - back_right_error
+
+            # Accumulate integral of errors
+            integral_front += front_total_error
+            integral_back += back_total_error
+
+            # Calculate derivative of errors
+            derivative_front = front_total_error - last_error_front
+            derivative_back = back_total_error - last_error_back
+
+            # Calculate PID adjustments for front and back
+            adjustment_front = Kp * front_total_error + Ki * integral_front + Kd * derivative_front
+            adjustment_back = Kp * back_total_error + Ki * integral_back + Kd * derivative_back
+
+            # Use the larger of the two adjustments for velocity setting
+            adjustment = max(abs(adjustment_front), abs(adjustment_back)) * (1 if adjustment_front >= 0 or adjustment_back >= 0 else -1)
+
+            # Ensure the adjustment does not cause velocity to exceed limits
+            sideways_velocity = max(-10, min(base_velocity + adjustment, 10))
+
+
+            # Set lateral movement velocities
+            # Positive adjustment moves the bot right; negative moves it left.
+            # Left wheels move in one direction, right wheels in the opposite direction.
+            self.set_velocities(
+                wheel1v=sideways_velocity,  # Front-right (moves laterally)
+                wheel2v=-sideways_velocity, # Front-left (moves laterally)
+                wheel3v=sideways_velocity,  # Rear-right (moves laterally)
+                wheel4v=-sideways_velocity  # Rear-left (moves laterally)
+            )
+
+
+            # Check if both front and back errors are within tolerance
+            if abs(front_total_error) < tolerance and abs(back_total_error) < tolerance:
+                print("Line is centered under the robot.")
+                self.stop()  # Stop the robot
+                break
+
+            # Update last errors for derivative calculation
+            last_error_front = front_total_error
+            last_error_back = back_total_error
+  
+    def center_on_line_laterally_with_pid_Front(self):
+        """
+        Adjust the wheel velocities using PID control to center the robot on the line
+        by moving sideways without rotating. Stops once the line is centered under the robot.
+        # PID parameters (tune these values based on your robot's behavior)
+           Adjust the wheel velocities using PID control to center the robot on the line
+        by moving the entire robot sideways without any rotation or angular deviation.
+        Stops once the line is centered under the robot.
+    """
+        # PID parameters (tune these values based on your robot's behavior)
+        Kp = 0.05  # Proportional gain
+        Ki = 0.01  # Integral gain
+        Kd = 0.02  # Derivative gain
+
+        # Variables for PID control
+        integral = 0
+        last_error = 0
+
+        # Tolerance for stopping (adjust based on sensitivity requirements)
+        tolerance = 5  # Minimum error to consider the line centered
+
+        # Base velocity for the wheels (used for lateral movement)
+        base_velocity = YOUBOT_MAX_VELOCITY * 0.3
+
+        while self.step(self.timestep) != -1:
+            # Read sensor values
+            left_outer = self.line_sensor_left_outer.getValue()
+            left_inner = self.line_sensor_left_inner.getValue()
+            right_inner = self.line_sensor_right_inner.getValue()
+            right_outer = self.line_sensor_right_outer.getValue()
+
+            # Calculate errors
+            left_error = (left_outer + left_inner) / 2
+            right_error = (right_inner + right_outer) / 2
+            total_error = left_error - right_error
+
+            # Accumulate integral of error
+            integral += total_error
+
+            # Calculate derivative of error
+            derivative = total_error - last_error
+
+            # Calculate PID adjustment
+            adjustment = Kp * total_error + Ki * integral + Kd * derivative
+
+            # Set lateral movement velocities
+            # Positive adjustment moves the bot right; negative moves it left.
+            # Left wheels move in one direction, right wheels in the opposite direction.
+            sideways_velocity = base_velocity + adjustment
+            self.set_velocities(
+                wheel1v=sideways_velocity,  # Front-right (moves laterally)
+                wheel2v=-sideways_velocity, # Front-left (moves laterally)
+                wheel3v=sideways_velocity,  # Rear-right (moves laterally)
+                wheel4v=-sideways_velocity  # Rear-left (moves laterally)
+            )
+
+            # Check if the line is centered (error within tolerance)
+            if abs(total_error) < tolerance:
+                print("Line is centered under the robot **FRONT**.")
+                self.stop()  # Stop the robot
+                break
+
+            # Update last error for derivative calculation
+            last_error = total_error
+
+    def center_on_line_laterally_with_pid_back(self):
+        """
+        Adjust the wheel velocities using PID control to center the robot on the line
+        by moving sideways without rotating. Stops once the line is centered under the robot.
+        # PID parameters (tune these values based on your robot's behavior)
+           Adjust the wheel velocities using PID control to center the robot on the line
+        by moving the entire robot sideways without any rotation or angular deviation.
+        Stops once the line is centered under the robot.
+    """
+        # PID parameters (tune these values based on your robot's behavior)
+        Kp = 0.05  # Proportional gain
+        Ki = 0.01  # Integral gain
+        Kd = 0.02  # Derivative gain
+
+        # Variables for PID control
+        integral = 0
+        last_error = 0
+
+        # Tolerance for stopping (adjust based on sensitivity requirements)
+        tolerance = 5  # Minimum error to consider the line centered
+
+        # Base velocity for the wheels (used for lateral movement)
+        base_velocity = YOUBOT_MAX_VELOCITY * 0.3
+
+        while self.step(self.timestep) != -1:
+            # Read sensor values
+            left_outer = self.line_sensor_left_outer_back.getValue()
+            left_inner = self.line_sensor_left_inner_back.getValue()
+            right_inner = self.line_sensor_right_inner_back.getValue()
+            right_outer = self.line_sensor_right_outer_back.getValue()
+
+            # Calculate errors
+            left_error = (left_outer + left_inner) / 2
+            right_error = (right_inner + right_outer) / 2
+            total_error = left_error - right_error
+
+            # Accumulate integral of error
+            integral += total_error
+
+            # Calculate derivative of error
+            derivative = total_error - last_error
+
+            # Calculate PID adjustment
+            adjustment = Kp * total_error + Ki * integral + Kd * derivative
+
+            # Set lateral movement velocities
+            # Positive adjustment moves the bot right; negative moves it left.
+            # Left wheels move in one direction, right wheels in the opposite direction.
+            sideways_velocity = base_velocity + adjustment
+            self.set_velocities(
+                wheel1v=sideways_velocity,  # Front-right (moves laterally)
+                wheel2v=-sideways_velocity, # Front-left (moves laterally)
+                wheel3v=sideways_velocity,  # Rear-right (moves laterally)
+                wheel4v=-sideways_velocity  # Rear-left (moves laterally)
+            )
+
+            # Check if the line is centered (error within tolerance)
+            if abs(total_error) < tolerance:
+                print("Line is centered under the robot **BACK**.")
+                self.stop()  # Stop the robot
+                break
+
+            # Update last error for derivative calculation
+            last_error = total_error
+            
+
+      
     def close_grippers(self , arm):
         if arm==1:
           
