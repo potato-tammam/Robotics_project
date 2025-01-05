@@ -43,8 +43,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.004420907414572595 -0.9999797195077113 0.004584337565085361 4.749301205554997
-  position -0.9948031786582242 -2.036756632755323 4.178482936657507
+  orientation 0.3255264670790045 0.32431266432380806 -0.8881744282460822 1.6928065600288082
+  position -1.1156979325929046 0.03423216786263511 1.9964774637098521
   follow "youBot"
 }
 TexturedBackground {
@@ -383,9 +383,9 @@ SolidBox {
   enableBoundingObject FALSE
 }
 SolidBox {
-  translation -1.29545 1.87 0
+  translation -1.29545 1.88 0
   name "left_cell_2(1)"
-  size 0.1 0.1 0.001
+  size 0.05 0.05 0.001
   appearance PBRAppearance {
     baseColor 1 0 0
     roughness 0.5
@@ -425,9 +425,9 @@ SolidBox {
   enableBoundingObject FALSE
 }
 SolidBox {
-  translation -1.28545 -0.63 0
+  translation -1.29545 -0.63 0
   name "left_cell_3(1)"
-  size 0.1 0.1 0.001
+  size 0.05 0.05 0.001
   appearance PBRAppearance {
     baseColor 0 0 1
     roughness 0.5
@@ -467,9 +467,9 @@ SolidBox {
   enableBoundingObject FALSE
 }
 SolidBox {
-  translation -1.28545 0.62 0
+  translation -1.29545 0.63 0
   name "left_cell_4(1)"
-  size 0.1 0.1 0.001
+  size 0.05 0.05 0.001
   appearance PBRAppearance {
     baseColor 0 1 0
     roughness 0.5

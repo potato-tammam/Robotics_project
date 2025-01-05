@@ -8,10 +8,10 @@ import time
 # Pick_Up_from_Box_Matrix3 = [0.0, -1.0, -0.32, -0.88, 0]
 # Pick_Up_from_Box_Matrix4 = [0.0, -1.5, -0.32, -0.88, 0]
 Pick_Up_from_Box_Matrix = [
-    [-0.0, -0.72, -0.32, -0.88, 0],
-    [-0.0, -0.85, -0.35, -0.88, 0],
-    [-0.0, -0.85, -0.32, -0.88, 0],
-    [-0.0, -0.80, -0.39, -0.80, 0]
+    [-0.02, -0.72, -0.32, -0.88, 0],
+    [-0.02, -0.85, -0.35, -0.88, 0],
+    [-0.02, -0.85, -0.32, -0.88, 0],
+    [-0.02, -0.80, -0.39, -0.80, 0]
 ]
 # PUT_ON_WALL_MATRIX1 = [-0.00, -0.73, -0.32, -0.88, 0]
 # PUT_ON_WALL_MATRIX2 = [-0.00, -0.63, -0.32, -0.88, 0]
@@ -20,9 +20,9 @@ Pick_Up_from_Box_Matrix = [
 
 PUT_ON_WALL_MATRIX = [
     [-0.00, -0.77, -0.34, -0.88, 0],
-    [-0.00, -0.67, -0.40, -0.88, 0],
-    [-0.00, -0.79, -0.33, -0.88, 0],
-    [-0.00, -0.74, -0.38, -0.88, 0]
+    [-0.01, -0.67, -0.40, -0.88, 0],
+    [-0.02, -0.79, -0.33, -0.88, 0],
+    [-0.02, -0.74, -0.38, -0.88, 0]
 ]
 Fold_Matrix = [-2.9, 1.5, -2.6, 1.7, 0]
 
@@ -449,11 +449,11 @@ class RobotController(Robot):
         if i == 0:
             self.grab_And_retract(1 , Pick_Up_from_Box_Matrix[i])
             print(Pick_Up_from_Box_Matrix[i])
-            self.step(65 * TIME_STEP)
+            self.step(55 * TIME_STEP)
         else :
             self.grab_And_retract(1 , Pick_Up_from_Box_Matrix[i])
             print(Pick_Up_from_Box_Matrix[i])
-            self.step(65 * TIME_STEP)
+            self.step(55 * TIME_STEP)
             self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH /4 )
             print("Moved a bit ")
             self.center_on_line_laterally_with_pid_Front()
@@ -486,7 +486,7 @@ class RobotController(Robot):
             self.correct_rotation_with_pid()
             
             
-        self.step(65 * TIME_STEP)
+        self.step(60 * TIME_STEP)
         self.Put_Box_On_wall(1 ,PUT_ON_WALL_MATRIX[i] )
         print(PUT_ON_WALL_MATRIX[i])
         
@@ -502,7 +502,7 @@ class RobotController(Robot):
         self.Put_Box_On_wall(2 , PUT_ON_WALL_MATRIX[i+1])
         print(PUT_ON_WALL_MATRIX[i+1])
         
-        self.step(65 * TIME_STEP)
+        self.step(60 * TIME_STEP)
         print(" put cubes on wall ")
         if i == 0:
             self.center_on_line_laterally_with_pid_Front()
@@ -520,7 +520,7 @@ class RobotController(Robot):
             self.center_on_line_laterally_with_pid_Front()
 
             
-        self.step(20 * TIME_STEP)
+        self.step(10 * TIME_STEP)
         
     def center_on_line_with_pid(self):
         """
@@ -918,6 +918,12 @@ class RobotController(Robot):
                     self.center_on_line_laterally_with_pid_Front()
                     # self.center_on_line_laterally_with_pid_back()
                     self.correct_rotation_with_pid()  
+                    self.move_forward(distance=0.3)
+                    self.center_on_line_with_pid() 
+                    self.center_on_line_laterally_with_pid_Front()
+                    self.center_on_line_laterally_with_pid_back()
+                    self.center_on_line_laterally_with_pid_Front()
+                    self.center_on_line_laterally_with_pid_back()
                     self.move_forward(distance=0.2)
                     self.center_on_line_with_pid() 
                     self.center_on_line_laterally_with_pid_Front()
@@ -941,10 +947,28 @@ class RobotController(Robot):
                     # self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2)
                     self.stop()
                     print("Detected the desired color and stopped")
-                    self.rotate_in_place(90)
+                    self.rotate_in_place(-90)
                     self.stop()
                     print("turned 90 degrees clockwise and stopped")
                     self.state = "PICKING_UP_BOTH_BOXES"
+                elif detected_color != "Unknown"  :
+                    self.center_on_line_with_pid() 
+                    self.center_on_line_laterally_with_pid_Front()
+                    # self.center_on_line_laterally_with_pid_back()
+                    self.correct_rotation_with_pid()  
+                    self.move_forward(distance=0.3)
+                    self.center_on_line_with_pid() 
+                    self.center_on_line_laterally_with_pid_Front()
+                    self.center_on_line_laterally_with_pid_back()
+                    self.center_on_line_laterally_with_pid_Front()
+                    self.center_on_line_laterally_with_pid_back()
+                    self.move_forward(distance=0.2)
+                    self.center_on_line_with_pid() 
+                    self.center_on_line_laterally_with_pid_Front()
+                    self.center_on_line_laterally_with_pid_back()
+                    self.correct_rotation_with_pid()
+                    self.correct_rotation_with_pid() 
+                    self.state = "DETECTING_COLOR_BACK"
                 # elif len(detected_color) >= len(self.colors_detected) :
                 #     self.stop()
                 #     self.rotate_in_place(180)
@@ -1017,10 +1041,23 @@ class RobotController(Robot):
                     self.stop()
                     self.state = "BACK_FROM_THE_FIRST_COLOR"
                 elif detected_color == COLOR_IN_HAND and COLOR_IN_HAND == "red":
+                    self.move_forward(distance=0.005)
                     self.stop()
-                    # self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2)
+                    self.correct_rotation_with_pid()
+                    self.center_on_line_with_pid()
+                    print("Detected the desired color and stopped")
+                    self.rotate_in_place(89.2)
                     self.stop()
-                    self.state = "ROTATING_90_DEGREES_COUNTER_CLOCKWISE_SECOND"
+                    self.center_on_line_with_pid() 
+                    self.center_on_line_laterally_with_pid_Front()
+                    # self.center_on_line_laterally_with_pid_back()
+                    self.correct_rotation_with_pid()  
+                    self.move_forward(distance=0.3)
+                    self.center_on_line_with_pid() 
+                    self.center_on_line_laterally_with_pid_Front()
+                    self.center_on_line_laterally_with_pid_back()
+                    self.correct_rotation_with_pid()
+                    self.state = "DETECTING_COLOR_BACK"
                     
                 elif detected_color == "red" and "red" != self.colors_detected[0]: 
                     self.stop()
