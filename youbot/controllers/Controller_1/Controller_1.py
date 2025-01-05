@@ -947,8 +947,10 @@ class RobotController(Robot):
                     # self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2)
                     self.stop()
                     print("Detected the desired color and stopped")
-                    self.rotate_in_place(-90)
+                    self.rotate_in_place(-89.3)
                     self.stop()
+                    self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH /9 )
+                    
                     print("turned 90 degrees clockwise and stopped")
                     self.state = "PICKING_UP_BOTH_BOXES"
                 elif detected_color != "Unknown"  :
