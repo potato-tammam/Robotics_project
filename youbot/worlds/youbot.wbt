@@ -43,8 +43,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.3255264670790045 0.32431266432380806 -0.8881744282460822 1.6928065600288082
-  position -1.1156979325929046 0.03423216786263511 1.9964774637098521
+  orientation 0.47505877206006386 0.5153240372844041 -0.7132743509237427 1.824553908696022
+  position -1.2328148927765037 0.834792850252437 5.535670224255431
   follow "youBot"
 }
 TexturedBackground {
@@ -96,7 +96,7 @@ Youbot {
       type "infra-red"
     }
     DistanceSensor {
-      translation -0.2 -0.03 -0.08
+      translation -0.2 -0.02 -0.08
       rotation 0 1 0 1.5708
       name "ls3b"
       type "infra-red"
@@ -341,7 +341,7 @@ SolidBox {
   enableBoundingObject FALSE
 }
 SolidBox {
-  translation -1.28545 -1.88 0
+  translation -1.2905 -1.88 0
   name "left_cell_1(1)"
   size 0.05 0.05 0.001
   appearance PBRAppearance {
@@ -360,16 +360,18 @@ SolidBox {
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
   translation 0.8 -1.88 0
   name "right_cell_1(1)"
-  size 0.1 0.1 0.001
+  size 0.05 0.05 0.001
   appearance PBRAppearance {
     baseColor 1 1 0
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
   translation -0.84545 -2.12 0
@@ -402,16 +404,18 @@ SolidBox {
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
-  translation 0.8 1.87 0
+  translation 0.8 1.88 0
   name "right_cell_2(1)"
-  size 0.1 0.1 0.001
+  size 0.05 0.05 0.001
   appearance PBRAppearance {
     baseColor 1 0 0
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
   translation -0.94545 -2.12 0
@@ -444,16 +448,18 @@ SolidBox {
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
-  translation 0.79 -0.63 0
+  translation 0.8 -0.63 0
   name "right_cell_3(1)"
-  size 0.1 0.1 0.001
+  size 0.05 0.05 0.001
   appearance PBRAppearance {
     baseColor 0 0 1
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
   translation -1.04545 -2.12 0
@@ -486,16 +492,18 @@ SolidBox {
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
-  translation 0.79 0.62 0
+  translation 0.8 0.63 0
   name "right_cell_4(1)"
-  size 0.1 0.1 0.001
+  size 0.05 0.05 0.001
   appearance PBRAppearance {
     baseColor 0 1 0
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 KukaBox {
   translation -2.01 -1.86 0.41249172281250196
