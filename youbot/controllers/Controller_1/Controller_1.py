@@ -431,8 +431,8 @@ class RobotController(Robot):
             )
 
             # Check if the robot is centered on the line
-            if abs(total_error) < tolerance:
-                print("Robot is centered on the line while moving forward.")
+            # if abs(total_error) < tolerance:
+            #     print("Robot is centered on the line while moving forward.")
 
             # Update last error for derivative calculation
             last_error = total_error
@@ -490,7 +490,7 @@ class RobotController(Robot):
         self.Put_Box_On_wall(1 ,PUT_ON_WALL_MATRIX[i] )
         print(PUT_ON_WALL_MATRIX[i])
         
-        self.step(25 * TIME_STEP)
+        self.step(10 * TIME_STEP)
         self.rotate_in_place(180)
         self.center_on_line_laterally_with_pid_Front()
         
@@ -532,7 +532,7 @@ class RobotController(Robot):
 
         # PID parameters (tune as needed)
         Kp = 0.05  # Proportional gain
-        Ki = 0.00  # Integral gain
+        Ki = 0.01  # Integral gain
         Kd = 0.02  # Derivative gain
 
         # PID variables
@@ -630,10 +630,10 @@ class RobotController(Robot):
            Adjust the wheel velocities using PID control to center the robot on the line
         by moving the entire robot sideways without any rotation or angular deviation.
         Stops once the line is centered under the robot.
-    """
+        """
         # PID parameters (tune these values based on your robot's behavior)
         Kp = 0.05  # Proportional gain
-        Ki = 0.00  # Integral gain
+        Ki = 0.01  # Integral gain
         Kd = 0.02  # Derivative gain
 
         # Variables for PID control
@@ -641,7 +641,7 @@ class RobotController(Robot):
         last_error = 0
 
         # Tolerance for stopping (adjust based on sensitivity requirements)
-        tolerance = 8  # Minimum error to consider the line centered
+        tolerance = 12  # Minimum error to consider the line centered
 
         # Base velocity for the wheels (used for lateral movement)
         base_velocity = YOUBOT_MAX_VELOCITY * 0.3
@@ -670,7 +670,7 @@ class RobotController(Robot):
             # Set lateral movement velocities
             # Positive adjustment moves the bot right; negative moves it left.
             # Left wheels move in one direction, right wheels in the opposite direction.
-            sideways_velocity = base_velocity + adjustment
+            sideways_velocity = max(-10, min(base_velocity + adjustment, 10))
             self.set_velocities(
                 wheel1v=sideways_velocity,  # Front-right (moves laterally)
                 wheel2v=-sideways_velocity, # Front-left (moves laterally)
@@ -695,18 +695,18 @@ class RobotController(Robot):
            Adjust the wheel velocities using PID control to center the robot on the line
         by moving the entire robot sideways without any rotation or angular deviation.
         Stops once the line is centered under the robot.
-    """
+         """
         # PID parameters (tune these values based on your robot's behavior)
         Kp = 0.05  # Proportional gain
-        Ki = 0.00  # Integral gain
-        Kd = 0.02  # Derivative gain
+        Ki = 0.01  # Integral gain
+        Kd = 0.01  # Derivative gain
 
         # Variables for PID control
         integral = 0
         last_error = 0
 
         # Tolerance for stopping (adjust based on sensitivity requirements)
-        tolerance = 8 # Minimum error to consider the line centered
+        tolerance = 12 # Minimum error to consider the line centered
 
         # Base velocity for the wheels (used for lateral movement)
         base_velocity = YOUBOT_MAX_VELOCITY * 0.3
@@ -735,7 +735,7 @@ class RobotController(Robot):
             # Set lateral movement velocities
             # Positive adjustment moves the bot right; negative moves it left.
             # Left wheels move in one direction, right wheels in the opposite direction.
-            sideways_velocity = base_velocity + adjustment
+            sideways_velocity = max(-10, min(base_velocity + adjustment, 10))
             self.set_velocities(
                 wheel1v=sideways_velocity,  # Front-right (moves laterally)
                 wheel2v=-sideways_velocity, # Front-left (moves laterally)
@@ -881,7 +881,7 @@ class RobotController(Robot):
             elif self.state == "DETECTING_LINE":
                 self.move_forward()
                 if self.detected_a_line():
-                    # self.move_forward(distance=0.002)
+                    self.move_forward(distance=0.002)
                     self.stop()
                     print("detected a line and stopped")
                     self.state = "ROTATING_90_DEGREES_CLOCKWISE_First"
@@ -933,6 +933,11 @@ class RobotController(Robot):
                     self.center_on_line_with_pid() 
                     self.center_on_line_laterally_with_pid_Front()
                     self.center_on_line_laterally_with_pid_back()
+                    self.correct_rotation_with_pid()
+                    self.move_forward(distance=0.2)
+                    self.center_on_line_with_pid() 
+                    self.center_on_line_laterally_with_pid_Front()
+                    self.center_on_line_laterally_with_pid_back()
                     self.correct_rotation_with_pid() 
                     self.state = "DETECTING_COLOR_Forth"
                 # elif len(detected_color) >= len(self.colors_detected) :
@@ -954,7 +959,7 @@ class RobotController(Robot):
                     print("Detected the desired color and stopped")
                     self.rotate_in_place(-89.3)
                     self.stop()
-                    self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH /8 )
+                    self.move_forward(distance= COLOR_SQUARE_SIDE_LENGTH /6.5 )
                     print("turned 90 degrees clockwise and stopped")
                     self.state = "PICKING_UP_BOTH_BOXES"
                     
@@ -969,6 +974,11 @@ class RobotController(Robot):
                     self.center_on_line_laterally_with_pid_back()
                     self.center_on_line_laterally_with_pid_Front()
                     self.center_on_line_laterally_with_pid_back()
+                    self.move_forward(distance=0.2)
+                    self.center_on_line_with_pid() 
+                    self.center_on_line_laterally_with_pid_Front()
+                    self.center_on_line_laterally_with_pid_back()
+                    self.correct_rotation_with_pid()
                     self.move_forward(distance=0.2)
                     self.center_on_line_with_pid() 
                     self.center_on_line_laterally_with_pid_Front()
@@ -1025,9 +1035,11 @@ class RobotController(Robot):
                 detected_color = self.detect_color(self.camera.getImageArray())
                 print(COLOR_IN_HAND)
                 print(detected_color)
+                if len(self.colors_detected)==0 :
+                    self.stop()
                 if detected_color == COLOR_IN_HAND and COLOR_IN_HAND != 'red':
                    
-                    self.move_forward(distance=0.008)
+                    self.move_forward(distance=0.007)
                     self.stop()
                     self.correct_rotation_with_pid()
                     self.center_on_line_with_pid()
@@ -1040,6 +1052,14 @@ class RobotController(Robot):
                     self.correct_rotation_with_pid()  
                     self.move_forward(distance=0.3)
                     self.center_on_line_with_pid() 
+                    self.center_on_line_laterally_with_pid_back()
+                    self.center_on_line_laterally_with_pid_Front()
+                    self.correct_rotation_with_pid() 
+                    self.move_forward(distance=0.3)
+                    self.center_on_line_with_pid() 
+                    self.center_on_line_laterally_with_pid_back()
+                    self.center_on_line_laterally_with_pid_Front()
+                    self.move_forward(distance=0.1)
                     self.center_on_line_laterally_with_pid_back()
                     self.center_on_line_laterally_with_pid_Front()
                     self.correct_rotation_with_pid() 
@@ -1058,7 +1078,7 @@ class RobotController(Robot):
                     self.correct_rotation_with_pid()
                     self.center_on_line_with_pid()
                     print("Detected the desired color and stopped")
-                    self.rotate_in_place(89.2)
+                    self.rotate_in_place(89.3)
                     self.stop()
                     self.center_on_line_with_pid() 
                     self.center_on_line_laterally_with_pid_Front()
@@ -1070,6 +1090,14 @@ class RobotController(Robot):
                     self.center_on_line_laterally_with_pid_Front()
                     self.center_on_line_laterally_with_pid_back()
                     self.correct_rotation_with_pid()
+                    self.move_forward(distance=0.3)
+                    self.center_on_line_with_pid() 
+                    self.center_on_line_laterally_with_pid_back()
+                    self.center_on_line_laterally_with_pid_Front()
+                    self.move_forward(distance=0.1)
+                    self.center_on_line_laterally_with_pid_back()
+                    self.center_on_line_laterally_with_pid_Front()
+                    self.correct_rotation_with_pid() 
                     self.state = "DETECTING_COLOR_BACK"
                     
                 elif detected_color == "red" and "red" != self.colors_detected[0]: 
