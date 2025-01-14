@@ -43,8 +43,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.4479667301491049 -0.43078075301690194 -0.7834243751056704 4.432893610231671
-  position -1.0119226974006943 -7.0828957614787145 9.881273213759366
+  orientation 0.32557262556261046 0.30934221472490003 -0.8934818742836151 1.733827120833233
+  position -0.1434478684745889 4.330486423829751 4.239536420975729
   follow "youBot"
 }
 TexturedBackground {
@@ -57,6 +57,10 @@ Youbot {
     "demo"
   ]
   bodySlot [
+    Receiver {
+    }
+    Emitter {
+    }
     Gyro {
     }
     DistanceSensor {
@@ -113,6 +117,54 @@ Youbot {
       name "ls4b"
       type "infra-red"
     }
+    DistanceSensor {
+      translation 0.2 0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls5"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls5b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 -0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls6"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 -0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls6b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls7"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls7b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 -0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls8"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 -0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls8b"
+      type "infra-red"
+    }
     Camera {
       translation 0 0 -0.08
       rotation 0 -1 0 -1.5708
@@ -130,20 +182,134 @@ Youbot {
   numberOfArms 2
 }
 Youbot {
-  translation 1.592350491657971 -2.2041350548594765 0.10133403680830709
-  rotation 1.3835049982749207e-10 8.060217089332509e-08 0.9999999999999967 3.1388294533214625
+  translation 1.5687 -2.19601 0.101335
+  rotation -2.2523399999938085e-06 6.51893999998208e-07 -0.9999999999972511 -3.14
   name "youBot(1)"
-  controller "<none>"
+  controller "Controller_1"
   controllerArgs [
     "demo"
   ]
   bodySlot [
-    LightSensor {
-      translation 0.21 0.02 -0.08
-      rotation 0 -1 0 7.75914e-06
+    Receiver {
+    }
+    Emitter {
+    }
+    Gyro {
+    }
+    DistanceSensor {
+      translation 0.01 0 -0.08
+      rotation 0 1 0 1.5708
+      name "line sensor"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 0.02 -0.08
+      rotation 0 1 0 1.5708
+      name "ls1"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 0.02 -0.08
+      rotation 0 1 0 1.5708
+      name "ls1b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 0.018 -0.08
+      rotation 0 1 0 1.5708
+      name "ls2"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 0.018 -0.08
+      rotation 0 1 0 1.5708
+      name "ls2b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 -0.02 -0.08
+      rotation 0 1 0 1.5708
+      name "ls3"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 -0.02 -0.08
+      rotation 0 1 0 1.5708
+      name "ls3b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 -0.018 -0.08
+      rotation 0 1 0 1.5708
+      name "ls4"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 -0.018 -0.08
+      rotation 0 1 0 1.5708
+      name "ls4b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls5"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls5b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 -0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls6"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 -0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls6b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls7"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls7b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 -0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls8"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 -0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls8b"
+      type "infra-red"
+    }
+    Camera {
+      translation 0 0 -0.08
+      rotation 0 -1 0 -1.5708
+      name "cam"
       recognitionColors [
-        0.666667 0 0
+        1 1 0
+        0 1 0
+        0 0 1
+        1 0 0
+        0 0 0
       ]
+      fieldOfView 0.785397
     }
   ]
   numberOfArms 2
@@ -352,7 +518,7 @@ SolidBox {
   enableBoundingObject FALSE
 }
 SolidBox {
-  translation 1.06 -2.2 0
+  translation 1.26 -2.2 0
   name "right_cell_1"
   size 0.1 0.1 0.001
   appearance PBRAppearance {
@@ -385,7 +551,7 @@ SolidBox {
   enableBoundingObject FALSE
 }
 SolidBox {
-  translation -1.2905 1.88 0
+  translation -1.2905 1.875 0
   name "left_cell_2(1)"
   size 0.05 0.05 0.001
   appearance PBRAppearance {
@@ -484,7 +650,7 @@ SolidBox {
   enableBoundingObject FALSE
 }
 SolidBox {
-  translation 1.26 -2.2 0
+  translation 1.06 -2.2 0
   name "right_cell_4"
   size 0.1 0.1 0.001
   appearance PBRAppearance {
