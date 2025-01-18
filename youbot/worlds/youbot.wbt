@@ -16,7 +16,7 @@ WorldInfo {
     "The robot can be equiped with various sensors (including the Microsoft Kinect) and configured with zero, one or two arms."
   ]
   title "KUKA youBot"
-  basicTimeStep 16
+  basicTimeStep 13
   contactProperties [
     ContactProperties {
       material1 "InteriorWheelMat"
@@ -43,9 +43,10 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.32557262556261046 0.30934221472490003 -0.8934818742836151 1.733827120833233
-  position -0.1434478684745889 4.330486423829751 4.239536420975729
+  orientation -0.5435986631387922 -0.545408933034718 0.6379887061693558 4.2803849981049025
+  position -0.2828464878943707 1.5660252492629438 9.005667369562644
   follow "youBot"
+  followType "None"
 }
 TexturedBackground {
 }
@@ -573,7 +574,7 @@ SolidBox {
   enableBoundingObject FALSE
 }
 SolidBox {
-  translation 0.8 1.88 0
+  translation 0.801 1.8805 0
   name "right_cell_2(1)"
   size 0.05 0.05 0.001
   appearance PBRAppearance {
@@ -617,7 +618,7 @@ SolidBox {
   enableBoundingObject FALSE
 }
 SolidBox {
-  translation 0.8 -0.63 0
+  translation 0.799 -0.625 0
   name "right_cell_3(1)"
   size 0.05 0.05 0.001
   appearance PBRAppearance {
@@ -661,7 +662,7 @@ SolidBox {
   enableBoundingObject FALSE
 }
 SolidBox {
-  translation 0.8 0.63 0
+  translation 0.8 0.627 0
   name "right_cell_4(1)"
   size 0.05 0.05 0.001
   appearance PBRAppearance {
