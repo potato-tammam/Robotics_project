@@ -620,7 +620,9 @@ class RobotController(Robot):
 
             self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH * 0.6)
             self.center_on_line_laterally_with_pid_Front()
-            self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH * 3)
+            self.center_and_move_forward(distance=COLOR_SQUARE_SIDE_LENGTH * 1.5)
+            self.center_on_line_laterally_with_pid_Front()
+            self.center_and_move_forward(distance=COLOR_SQUARE_SIDE_LENGTH * 1.5)
             self.center_on_line_laterally_with_pid_Front()
             self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH * 4)
             self.center_on_line_laterally_with_pid_Front()
