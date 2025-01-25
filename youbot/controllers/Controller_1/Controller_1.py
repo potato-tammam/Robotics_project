@@ -29,7 +29,7 @@ PUT_ON_BOX_MATRIX = [
     [-0.00, -0.77, -0.34, -0.88, 0],
     [-0.05, -0.67, -0.40, -0.88, 0],
     [-0.07, -0.79, -0.33, -0.88, 0],
-    [ 0.09, -0.74, -0.38, -0.88, 0],
+    [0.09, -0.74, -0.38, -0.88, 0],
 ]
 
 Fold_Matrix = [-2.9, 1.5, -2.6, 1.7, 0]
@@ -446,7 +446,7 @@ class RobotController(Robot):
 
         # Threshold for sensor readings to detect the line
         threshold = 10
-  
+
         # Distance calculation setup (if distance is specified)
         if distance:
             circumference = 2 * math.pi * YOUBOT_WHEEL_RADIUS
@@ -507,7 +507,7 @@ class RobotController(Robot):
     def loop_Function(self, i):
         if i == 0:
             self.grab_And_retract(1, Pick_Up_from_Box_Matrix[i])
-            print(Pick_Up_from_Box_Matrix[i])
+            # print(Pick_Up_from_Box_Matrix[i])
             # self.step(30 * TIME_STEP)
             self.passive_wait(0.6)
         else:
@@ -530,7 +530,7 @@ class RobotController(Robot):
 
         self.grab_And_retract(2, Pick_Up_from_Box_Matrix[i + 1])
         self.center_on_line_laterally_with_pid_Front()
-        print(Pick_Up_from_Box_Matrix[i + 1])
+        # print(Pick_Up_from_Box_Matrix[i + 1])
         self.passive_wait(0.4)
         print("picked up cubes from the Box")
         if i == 0:
@@ -539,7 +539,7 @@ class RobotController(Robot):
             self.center_on_line_laterally_with_pid_Front()
 
         else:
-            # self.center_on_line_laterally_with_pid_Front()
+            
             self.center_on_line_laterally_with_pid_Front()
 
             self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH * 7.35)
@@ -549,7 +549,7 @@ class RobotController(Robot):
 
         self.passive_wait(1)
         self.Put_Box_On_wall(1, PUT_ON_WALL_MATRIX[i])
-        print(PUT_ON_WALL_MATRIX[i])
+        # print(PUT_ON_WALL_MATRIX[i])
 
         self.passive_wait(0.2)
         self.rotate_in_place(180)
@@ -561,7 +561,7 @@ class RobotController(Robot):
         self.center_on_line_laterally_with_pid_back()
         self.passive_wait(0.2)
         self.Put_Box_On_wall(2, PUT_ON_WALL_MATRIX[i + 1])
-        print(PUT_ON_WALL_MATRIX[i + 1])
+        # print(PUT_ON_WALL_MATRIX[i + 1])
 
         self.passive_wait(0.5)
         print(" put cubes on wall ")
@@ -582,7 +582,7 @@ class RobotController(Robot):
     def loop_Function2(self, i):
         if i == 0:
             self.grab_And_retract(1, Pick_Up_from_WALL_Matrix[i])
-            print(Pick_Up_from_WALL_Matrix[i])
+         
             self.passive_wait(0.5)
         else:
             self.grab_And_retract(1, Pick_Up_from_WALL_Matrix[i])
@@ -595,13 +595,12 @@ class RobotController(Robot):
 
         self.rotate_in_place(180)
         self.center_on_line_laterally_with_pid_back()
-        # self.center_on_line_laterally_with_pid_Front()
+        
 
         self.passive_wait(0.4)
 
         self.grab_And_retract(2, Pick_Up_from_WALL_Matrix[i + 1])
         self.center_on_line_laterally_with_pid_Front()
-        print(Pick_Up_from_WALL_Matrix[i + 1])
         self.passive_wait(0.4)
         print("picked up cubes from the WALL")
         if i == 0:
@@ -615,7 +614,6 @@ class RobotController(Robot):
             self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH * 4)
             self.center_on_line_laterally_with_pid_Front()
         else:
-            # self.center_on_line_laterally_with_pid_Front()
             self.center_on_line_laterally_with_pid_Front()
 
             self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH * 0.6)
@@ -628,10 +626,8 @@ class RobotController(Robot):
             self.center_on_line_laterally_with_pid_Front()
             self.correct_rotation_with_pid()
 
-        # self.step(40 * TIME_STEP)
         self.passive_wait(0.8)
         self.Put_Box_On_wall(1, PUT_ON_BOX_MATRIX[i])
-        print(PUT_ON_BOX_MATRIX[i])
 
         self.passive_wait(0.2)
         self.rotate_in_place(180)
@@ -643,7 +639,6 @@ class RobotController(Robot):
         self.center_on_line_laterally_with_pid_back()
         self.passive_wait(0.2)
         self.Put_Box_On_wall(2, PUT_ON_BOX_MATRIX[i + 1])
-        print(PUT_ON_BOX_MATRIX[i + 1])
 
         self.passive_wait(0.4)
         print(" put cubes on BOX ")
@@ -670,7 +665,6 @@ class RobotController(Robot):
         by moving the entire robot sideways without any rotation or angular deviation.
         Stops once the line is centered under the robot.
         """
-        # PID parameters (tune these values based on your robot's behavior)
         Kp = 0.05  # Proportional gain
         Ki = 0.01  # Integral gain
         Kd = 0.02  # Derivative gain
@@ -1041,18 +1035,16 @@ class RobotController(Robot):
 
                 self.loop_Function(2)
                 self.colors_detected.remove(COLOR_IN_HAND)
-                # RobotController.DONE_COLORS.append(COLOR_IN_HAND)
-                # self.done_Colors.append(COLOR_IN_HAND)
+
 
                 print(self.colors_detected)
                 self.state = "WHERE_IN_LINE"
 
             elif self.state == "WHERE_IN_LINE":
-                # print("returing to Line following")
+
                 self.move_forward()
                 detected_color = self.detect_color(self.camera.getImageArray())
-                # print(COLOR_IN_HAND)
-                # print(detected_color)
+
                 if len(self.colors_detected) == 0:
                     self.stop()
                     self.state = "soso"
@@ -1120,7 +1112,7 @@ class RobotController(Robot):
 
                 elif detected_color == "red" and "red" != self.colors_detected[0]:
                     self.stop()
-                    # self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2)
+
                     self.stop()
                     print("Detected the desired color and stopped")
                     self.state = "BACK_FROM_THE_LAST_COLOR"
@@ -1185,7 +1177,7 @@ class RobotController(Robot):
                 print("Waiting for another robot to finish...")
 
                 while True:
-                    self.check_for_updates()  # Refresh DONE_COLORS
+                    self.check_for_updates() 
                     print("Current DONE_COLORS:", RobotController.DONE_COLORS)
 
                     if self.colors_detected[0] in RobotController.DONE_COLORS:
@@ -1198,7 +1190,7 @@ class RobotController(Robot):
                         print(
                             f"{self.colors_detected[0]} not in DONE_COLORS, waiting..."
                         )
-                        self.passive_wait(1)  # Wait before checking again
+                        self.passive_wait(1)  
 
             elif self.state == "DETECTING_COLOR_Forth":
                 self.move_forward()
@@ -1206,13 +1198,13 @@ class RobotController(Robot):
                 if detected_color == self.colors_detected[0]:
                     COLOR_IN_HAND2 = detected_color
                     self.stop()
-                    # self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH /2)
+                 
                     self.stop()
                     print("Detected the desired color and stopped")
                     self.state = "ROTATING_90_DEGREES_COUNTER_CLOCKWISE_First"
                 elif detected_color != "Unknown":
                     self.center_on_line_laterally_with_pid_Front()
-                    # self.center_on_line_laterally_with_pid_back()
+         
                     self.correct_rotation_with_pid()
                     self.move_forward(distance=0.15)
                     self.center_on_line_laterally_with_pid_Front()
@@ -1225,13 +1217,9 @@ class RobotController(Robot):
                     for i in range(2):
                         self.move_forward(distance=0.1)
                         self.center_on_line_laterally_with_pid_Front()
-                      
+
                     self.state = "DETECTING_COLOR_Forth"
-                # elif len(detected_color) >= len(self.colors_detected) :
-                #     self.stop()
-                #     self.rotate_in_place(180)
-                #     self.stop()
-                #     self.state = "DETECTING_COLOR_BACK"
+
 
             elif self.state == "DETECTING_COLOR_BACK":
                 self.move_forward()
@@ -1239,12 +1227,12 @@ class RobotController(Robot):
                 if detected_color == self.colors_detected[0]:
                     COLOR_IN_HAND2 = detected_color
                     self.stop()
-                    # self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2)
-                    self.stop()
+
+
                     print("Detected the desired color and stopped")
                     self.rotate_in_place(-89.4)
                     self.stop()
-                    self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH * 1.45 )
+                    self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH * 1.45)
                     print("turned 90 degrees clockwise and stopped")
                     self.state = "PICKING_UP_BOTH_BOXES"
 
@@ -1274,7 +1262,7 @@ class RobotController(Robot):
                 self.stop()
                 self.center_on_line_laterally_with_pid_Front()
                 self.passive_wait(0.2)
-                self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH * 1.45 )
+                self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH * 1.45)
                 self.center_on_line_laterally_with_pid_Front()
                 print("turned 90 degrees counter clockwise and stopped")
                 self.state = "PICKING_UP_BOTH_BOXES"
@@ -1287,11 +1275,10 @@ class RobotController(Robot):
                 self.state = "WHERE_IN_LINE"
 
             elif self.state == "WHERE_IN_LINE":
-                # print("returing to Line following")
+                print("returing to Line following")
                 self.move_forward()
                 detected_color = self.detect_color(self.camera.getImageArray())
-                # print(COLOR_IN_HAND)
-                # print(detected_color)
+
                 if len(self.colors_detected) == 0:
                     self.stop()
                     self.state = "soso"
@@ -1305,7 +1292,7 @@ class RobotController(Robot):
                     self.stop()
 
                     self.center_on_line_laterally_with_pid_Front()
-                    # self.center_on_line_laterally_with_pid_back()
+
                     self.correct_rotation_with_pid()
                     self.move_forward(distance=0.25)
 
@@ -1338,7 +1325,6 @@ class RobotController(Robot):
                     self.stop()
 
                     self.center_on_line_laterally_with_pid_Front()
-                    # self.center_on_line_laterally_with_pid_back()
                     self.correct_rotation_with_pid()
                     self.move_forward(distance=0.3)
 
@@ -1359,8 +1345,7 @@ class RobotController(Robot):
 
                 elif detected_color == "red" and "red" != self.colors_detected[0]:
                     self.stop()
-                    # self.move_forward(distance=COLOR_SQUARE_SIDE_LENGTH / 2)
-                    self.stop()
+
                     print("Detected the desired color and stopped")
                     self.state = "BACK_FROM_THE_LAST_COLOR"
 
