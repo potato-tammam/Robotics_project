@@ -16,7 +16,7 @@ WorldInfo {
     "The robot can be equiped with various sensors (including the Microsoft Kinect) and configured with zero, one or two arms."
   ]
   title "KUKA youBot"
-  basicTimeStep 16
+  basicTimeStep 13
   contactProperties [
     ContactProperties {
       material1 "InteriorWheelMat"
@@ -43,26 +43,127 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.07544290696011059 -0.9764524022250894 -0.20211153845899044 5.552880423779628
-  position -4.8398142050357595 -2.5379540866758123 3.3083125176024293
+  orientation -0.5435986631387922 -0.545408933034718 0.6379887061693558 4.2803849981049025
+  position -0.2828464878943707 1.5660252492629438 9.005667369562644
   follow "youBot"
+  followType "None"
 }
 TexturedBackground {
 }
 Youbot {
-  translation -0.450933 -2.1333 0.101452
-  rotation 0.0008990493719741723 -0.0004442490159976176 0.9999994971763927 3.1331768707740255
+  translation -0.491114 -2.13282 0.101335
+  rotation -2.2523399999938085e-06 6.51893999998208e-07 -0.9999999999972511 -3.14
   controller "Controller_1"
   controllerArgs [
     "demo"
   ]
   bodySlot [
+    Receiver {
+    }
+    Emitter {
+    }
     Gyro {
     }
     DistanceSensor {
-      translation 0 0 -0.08
+      translation 0.01 0 -0.08
       rotation 0 1 0 1.5708
       name "line sensor"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 0.02 -0.08
+      rotation 0 1 0 1.5708
+      name "ls1"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 0.02 -0.08
+      rotation 0 1 0 1.5708
+      name "ls1b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 0.018 -0.08
+      rotation 0 1 0 1.5708
+      name "ls2"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 0.018 -0.08
+      rotation 0 1 0 1.5708
+      name "ls2b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 -0.02 -0.08
+      rotation 0 1 0 1.5708
+      name "ls3"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 -0.02 -0.08
+      rotation 0 1 0 1.5708
+      name "ls3b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 -0.018 -0.08
+      rotation 0 1 0 1.5708
+      name "ls4"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 -0.018 -0.08
+      rotation 0 1 0 1.5708
+      name "ls4b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls5"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls5b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 -0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls6"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 -0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls6b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls7"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls7b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 -0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls8"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 -0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls8b"
       type "infra-red"
     }
     Camera {
@@ -82,20 +183,134 @@ Youbot {
   numberOfArms 2
 }
 Youbot {
-  translation 1.5923504916579583 -2.2041350548631353 0.1013341109300587
-  rotation 1.3834016044304233e-10 8.060316653710737e-08 0.9999999999999967 3.138829453281389
+  translation 1.5687 -2.19601 0.101335
+  rotation -2.2523399999938085e-06 6.51893999998208e-07 -0.9999999999972511 -3.14
   name "youBot(1)"
-  controller "<none>"
+  controller "Controller_1"
   controllerArgs [
     "demo"
   ]
   bodySlot [
-    LightSensor {
-      translation 0.21 0.02 -0.08
-      rotation 0 -1 0 7.75914e-06
+    Receiver {
+    }
+    Emitter {
+    }
+    Gyro {
+    }
+    DistanceSensor {
+      translation 0.01 0 -0.08
+      rotation 0 1 0 1.5708
+      name "line sensor"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 0.02 -0.08
+      rotation 0 1 0 1.5708
+      name "ls1"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 0.02 -0.08
+      rotation 0 1 0 1.5708
+      name "ls1b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 0.018 -0.08
+      rotation 0 1 0 1.5708
+      name "ls2"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 0.018 -0.08
+      rotation 0 1 0 1.5708
+      name "ls2b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 -0.02 -0.08
+      rotation 0 1 0 1.5708
+      name "ls3"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 -0.02 -0.08
+      rotation 0 1 0 1.5708
+      name "ls3b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 -0.018 -0.08
+      rotation 0 1 0 1.5708
+      name "ls4"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 -0.018 -0.08
+      rotation 0 1 0 1.5708
+      name "ls4b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls5"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls5b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 -0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls6"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 -0.025 -0.08
+      rotation 0 1 0 1.5708
+      name "ls6b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls7"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls7b"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.2 -0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls8"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.2 -0.03 -0.08
+      rotation 0 1 0 1.5708
+      name "ls8b"
+      type "infra-red"
+    }
+    Camera {
+      translation 0 0 -0.08
+      rotation 0 -1 0 -1.5708
+      name "cam"
       recognitionColors [
-        0.666667 0 0
+        1 1 0
+        0 1 0
+        0 0 1
+        1 0 0
+        0 0 0
       ]
+      fieldOfView 0.785397
     }
   ]
   numberOfArms 2
@@ -150,26 +365,26 @@ SolidBox {
   }
 }
 KukaBox {
-  translation -1.92 1.89 0.41249172281291496
-  rotation -0.2758139342876899 -0.35417016561935427 0.8935827703340666 2.015135019141347e-15
+  translation -1.92 1.89 0.41249172281250196
+  rotation -0.3289421990817153 -0.49057759000972545 0.806926674390886 2.2272864710181932e-15
   name "Kuka_box_red_1"
   color 0.666667 0 0
 }
 KukaBox {
-  translation -1.95 1.89 0.41249172281291496
-  rotation -0.2758139342876899 -0.35417016561935427 0.8935827703340666 2.015135019141347e-15
+  translation -1.95 1.89 0.41249172281250196
+  rotation -0.3289421990817153 -0.49057759000972545 0.806926674390886 2.2272864710181932e-15
   name "Kuka_box_red_2"
   color 0.666667 0 0
 }
 KukaBox {
-  translation -1.98 1.89 0.41249172281291496
-  rotation -0.38886236274254543 -0.3039698751015691 0.869705914590111 2.306376026185063e-15
+  translation -1.98 1.89 0.41249172281250196
+  rotation -0.42679291173049777 -0.42930345827008026 0.7959562495602086 2.5157611417981854e-15
   name "Kuka_box_red_3"
   color 0.666667 0 0
 }
 KukaBox {
-  translation -2.01 1.89 0.41249172281291496
-  rotation 0.5158440677511733 0.0034161858791228695 0.856675683931768 1.8488266307556486e-15
+  translation -2.01 1.89 0.41249172281250196
+  rotation 0.42386346487718946 0.025359352599467345 0.9053710103477135 1.7434020773753727e-15
   name "Kuka_box_red_4"
   color 0.666667 0 0
 }
@@ -194,26 +409,26 @@ SolidBox {
   }
 }
 KukaBox {
-  translation -1.92 0.64 0.41249172281291496
-  rotation -0.31587585167210147 -0.7164988830612002 0.6219741127269502 8.197947111732182e-16
+  translation -1.92 0.64 0.41249172281250196
+  rotation -0.33380498570427636 -0.7599390100076933 0.5577337470401937 8.892885902698296e-16
   name "Kuka_box_green_1"
   color 0 0.666667 0
 }
 KukaBox {
-  translation -1.95 0.64 0.41249172281291496
-  rotation -0.8102468043303169 -0.5847141886919662 -0.04011774688096158 7.56122373253036e-16
+  translation -1.95 0.64 0.41249172281250196
+  rotation -0.781813143918445 -0.6226830349792801 -0.03215658478988978 9.12878875248273e-16
   name "Kuka_box_green_2"
   color 0 0.666667 0
 }
 KukaBox {
-  translation -1.98 0.64 0.41249172281291496
-  rotation -0.5090007112332027 -0.8572643557612007 0.07756352432314555 1.1788075193437054e-15
+  translation -1.98 0.64 0.41249172281250196
+  rotation -0.5499730727094782 -0.8326695119526876 0.0647387299764839 1.2287966892112359e-15
   name "Kuka_box_green_3"
   color 0 0.666667 0
 }
 KukaBox {
-  translation -2.01 0.64 0.41249172281291496
-  rotation 0.298705191327193 -0.7419451526513609 -0.6002437830842845 1.3109514262434334e-15
+  translation -2.01 0.64 0.41249172281250196
+  rotation 0.3234314077384424 -0.7324770116428947 -0.5990572192228585 1.3278970405925918e-15
   name "Kuka_box_green_4"
   color 0 0.666667 0
 }
@@ -238,26 +453,26 @@ SolidBox {
   }
 }
 KukaBox {
-  translation -1.92 -0.61 0.41249172281291496
-  rotation -0.31587585167210147 -0.7164988830612002 0.6219741127269502 8.197947111732182e-16
+  translation -1.92 -0.61 0.41249172281250196
+  rotation -0.33380498570427636 -0.7599390100076933 0.5577337470401937 8.892885902698296e-16
   name "Kuka_box_blue_1"
   color 0 0 0.666667
 }
 KukaBox {
-  translation -1.95 -0.61 0.41249172281291496
-  rotation -0.8102468043303169 -0.5847141886919662 -0.04011774688096158 7.56122373253036e-16
+  translation -1.95 -0.61 0.41249172281250196
+  rotation -0.781813143918445 -0.6226830349792801 -0.03215658478988978 9.12878875248273e-16
   name "Kuka_box_blue_2"
   color 0 0 0.666667
 }
 KukaBox {
-  translation -1.98 -0.61 0.41249172281291496
-  rotation -0.5090007112332027 -0.8572643557612007 0.07756352432314555 1.1788075193437054e-15
+  translation -1.98 -0.61 0.41249172281250196
+  rotation -0.5499730727094782 -0.8326695119526876 0.0647387299764839 1.2287966892112359e-15
   name "Kuka_box_blue_3"
   color 0 0 0.666667
 }
 KukaBox {
-  translation -2.01 -0.61 0.41249172281291496
-  rotation 0.298705191327193 -0.7419451526513609 -0.6002437830842845 1.3109514262434334e-15
+  translation -2.01 -0.61 0.41249172281250196
+  rotation 0.3234314077384424 -0.7324770116428947 -0.5990572192228585 1.3278970405925918e-15
   name "Kuka_box_blue_4"
   color 0 0 0.666667
 }
@@ -293,17 +508,18 @@ SolidBox {
   enableBoundingObject FALSE
 }
 SolidBox {
-  translation -1.28545 -1.88 0
+  translation -1.2905 -1.88 0
   name "left_cell_1(1)"
-  size 0.1 0.1 0.001
+  size 0.05 0.05 0.001
   appearance PBRAppearance {
     baseColor 1 1 0
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
-  translation 1.06 -2.2 0
+  translation 1.26 -2.2 0
   name "right_cell_1"
   size 0.1 0.1 0.001
   appearance PBRAppearance {
@@ -311,16 +527,18 @@ SolidBox {
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
   translation 0.8 -1.88 0
   name "right_cell_1(1)"
-  size 0.1 0.1 0.001
+  size 0.05 0.05 0.001
   appearance PBRAppearance {
     baseColor 1 1 0
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
   translation -0.84545 -2.12 0
@@ -334,14 +552,15 @@ SolidBox {
   enableBoundingObject FALSE
 }
 SolidBox {
-  translation -1.29545 1.87 0
+  translation -1.2905 1.875 0
   name "left_cell_2(1)"
-  size 0.1 0.1 0.001
+  size 0.05 0.05 0.001
   appearance PBRAppearance {
     baseColor 1 0 0
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
   translation 0.96 -2.2 0
@@ -352,16 +571,18 @@ SolidBox {
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
-  translation 0.8 1.87 0
+  translation 0.801 1.8805 0
   name "right_cell_2(1)"
-  size 0.1 0.1 0.001
+  size 0.05 0.05 0.001
   appearance PBRAppearance {
     baseColor 1 0 0
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
   translation -0.94545 -2.12 0
@@ -375,14 +596,15 @@ SolidBox {
   enableBoundingObject FALSE
 }
 SolidBox {
-  translation -1.28545 -0.63 0
+  translation -1.2905 -0.625 0
   name "left_cell_3(1)"
-  size 0.1 0.1 0.001
+  size 0.05 0.05 0.001
   appearance PBRAppearance {
     baseColor 0 0 1
     roughness 0.5
     metalness 0
   }
+  castShadows FALSE
 }
 SolidBox {
   translation 1.16 -2.2 0
@@ -393,16 +615,18 @@ SolidBox {
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
-  translation 0.79 -0.63 0
+  translation 0.799 -0.625 0
   name "right_cell_3(1)"
-  size 0.1 0.1 0.001
+  size 0.05 0.05 0.001
   appearance PBRAppearance {
     baseColor 0 0 1
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
   translation -1.04545 -2.12 0
@@ -416,17 +640,18 @@ SolidBox {
   enableBoundingObject FALSE
 }
 SolidBox {
-  translation -1.28545 0.62 0
+  translation -1.2905 0.63 0
   name "left_cell_4(1)"
-  size 0.1 0.1 0.001
+  size 0.05 0.05 0.001
   appearance PBRAppearance {
     baseColor 0 1 0
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
-  translation 1.26 -2.2 0
+  translation 1.06 -2.2 0
   name "right_cell_4"
   size 0.1 0.1 0.001
   appearance PBRAppearance {
@@ -434,38 +659,40 @@ SolidBox {
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 SolidBox {
-  translation 0.79 0.62 0
+  translation 0.8 0.627 0
   name "right_cell_4(1)"
-  size 0.1 0.1 0.001
+  size 0.05 0.05 0.001
   appearance PBRAppearance {
     baseColor 0 1 0
     roughness 0.5
     metalness 0
   }
+  enableBoundingObject FALSE
 }
 KukaBox {
-  translation -2.01 -1.86 0.41249172281291496
-  rotation 0.5158440677511733 0.0034161858791228695 0.856675683931768 1.8488266307556486e-15
+  translation -2.01 -1.86 0.41249172281250196
+  rotation 0.42386346487718946 0.025359352599467345 0.9053710103477135 1.7434020773753727e-15
   name "Kuka_box_yellow_1"
   color 0.666667 0.666667 0
 }
 KukaBox {
-  translation -1.98 -1.86 0.41249172281291496
-  rotation -0.38886236274254543 -0.3039698751015691 0.869705914590111 2.306376026185063e-15
+  translation -1.98 -1.86 0.41249172281250196
+  rotation -0.42679291173049777 -0.42930345827008026 0.7959562495602086 2.5157611417981854e-15
   name "Kuka_box_yellow_2"
   color 0.666667 0.666667 0
 }
 KukaBox {
-  translation -1.95 -1.86 0.41249172281291496
-  rotation -0.2758139342876899 -0.35417016561935427 0.8935827703340666 2.015135019141347e-15
+  translation -1.95 -1.86 0.41249172281250196
+  rotation -0.3289421990817153 -0.49057759000972545 0.806926674390886 2.2272864710181932e-15
   name "Kuka_box_yellow_3"
   color 0.666667 0.666667 0
 }
 KukaBox {
-  translation -1.92 -1.86 0.41249172281291496
-  rotation -0.2758139342876899 -0.35417016561935427 0.8935827703340666 2.015135019141347e-15
+  translation -1.92 -1.86 0.41249172281250196
+  rotation -0.3289421990817153 -0.49057759000972545 0.806926674390886 2.2272864710181932e-15
   name "Kuka_box_yellow_4"
   color 0.666667 0.666667 0
 }
